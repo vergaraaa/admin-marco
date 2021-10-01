@@ -1,5 +1,5 @@
 <template>
-    <div id="nav">
+    <div id="nav" v-if="$route.name !== 'Login'">
         <Nav />
     </div>
     <router-view/>
