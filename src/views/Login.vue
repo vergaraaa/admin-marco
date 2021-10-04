@@ -59,7 +59,7 @@ export default {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(this.form)
             };
-            const response = await fetch("https://api-marco.herokuapp.com/api/users/login", requestOptions);
+            const response = await fetch("https://api-marco.herokuapp.com/api/users/login/admin", requestOptions);
             const data = await response.json();
             if(data.token){
                 localStorage.setItem("token", data.token);
@@ -104,7 +104,6 @@ input:active, input:focus {
     outline: 0px !important;
     border-color: transparent !important;
 }
-
 
 button:active, button:focus {
     box-shadow: 0 0 0 0.2rem #ec179b !important;

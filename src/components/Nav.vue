@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-marco">
     <div class="container">
         <router-link class="navbar-brand" :to="{ name: 'Home' }"><img src="logo_marco.png" style="width: 125px"></router-link>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button @click="handleToggle" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -15,7 +15,7 @@
                     <i class="fas fa-users mx-1"></i>
                     Colaboradores
                 </router-link>
-                <router-link :to="{ name: 'Expos' }" class="nav-link px-3" :class="$route.name.includes('Expo') ? 'active': ''">
+                <router-link :to="{ name: 'Expos' }" class="nav-link px-3" :class="'Expos' === $route.name ? 'active': ''">
                     <i class="far fa-images mx-1"></i>
                     Exposiciones
                 </router-link>
@@ -36,7 +36,8 @@ export default {
     name: 'Nav',
     data(){
         return{
-            token: localStorage.getItem('token')
+            token: '',
+            navOpen: false
         }
     },
     created(){
@@ -46,12 +47,16 @@ export default {
         handleLogout(){
             localStorage.removeItem('token');
             this.$router.go();
+        },
+        handleToggle(){
+            this.navOpen = !this.navOpen;
         }
     },
     watch: {
     '$route' () {
-            if(document.getElementById("navbarNav").classList.toggle("show")){
+            if(this.navOpen){
                 document.getElementById("navbarNav").classList.toggle("show");
+                this.navOpen = false;
             }
         },
     },
