@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import About from '../views/About.vue'
+import Colaborators from '../views/Colaborators.vue'
 import Login from '../views/Login.vue'
 import Expos from '../views/Expos.vue'
 import ExpoDetail from '../views/ExpoDetail.vue'
@@ -13,9 +13,9 @@ const routes = [
         meta: { requiresAuth: true },
     },
     {
-        path: '/about',
-        name: 'About',
-        component: About,
+        path: '/colaborators',
+        name: 'Colaborators',
+        component: Colaborators,
         meta: { requiresAuth: true }
     },
     {

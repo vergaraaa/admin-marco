@@ -11,7 +11,7 @@
                     <i class="fas fa-user-shield mx-1"></i> 
                     Marco Admin
                 </router-link>
-                <router-link :to="{ name: 'About' }" class="nav-link px-3" :class="'About' === $route.name ? 'active': ''">
+                <router-link :to="{ name: 'Colaborators' }" class="nav-link px-3" :class="'Colaborators' === $route.name ? 'active': ''">
                     <i class="fas fa-users mx-1"></i>
                     Colaboradores
                 </router-link>

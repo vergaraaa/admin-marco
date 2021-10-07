@@ -49,7 +49,9 @@ export default {
 </script>
 
 <style scoped>
-
+body{
+    background-color: #f4ede7;
+}
 .spinner-border {
     width: 50px; 
     height: 50px;

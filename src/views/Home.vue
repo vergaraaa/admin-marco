@@ -7,6 +7,9 @@
 <script>
 
 export default {
-    name: 'Home'
+    name: 'Home',
+    created(){
+        document.body.style.background = "#f4ede7";
+    }
 }
 </script>
