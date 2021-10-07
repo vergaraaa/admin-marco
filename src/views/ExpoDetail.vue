@@ -15,57 +15,57 @@
                                 <div class="col-sm">
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">Nombre de la exposición:</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder= expo.name>
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder="expo.name">
                                     </div>
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">Autor:</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder="expo.author">
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder="expo.author">
                                     </div>
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">Fecha de inicio: Ex. "20 de Octubre de 2020"</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder="expo.startDate">
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder="expo.startDate">
                                     </div>
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">Fecha de conclusión: Ex. "20 de Octubre de 2020"</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder="expo.endDate">
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder="expo.endDate">
                                     </div>
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">URL del tour virtual:</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder="expo.virtualTourURL">
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder="expo.virtualTourURL">
                                     </div>                                    
                                 </div>
                                 <div class="col-sm">
                                     
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">Curadores:</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder="expo.curatorship">
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder=expo.curatorship>
                                     </div>
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">Museografía:</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder="expo.museography">
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder="expo.museography">
                                     </div>
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">Ubicación:</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder="expo.location">
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder="expo.location">
                                     </div>
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">Total de piezas:</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder="expo.totalPieces">
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder="expo.totalPieces">
                                     </div>
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">URL de la cápsula del autor:</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder="expo.authorCapsuleURL">
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder="expo.authorCapsuleURL">
                                     </div>
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label">Técnica:</label>
-                                        <input type="text" id="disabledTextInput" class="form-control" placeholder= {{expo.technique}}>
+                                        <input type="text" id="disabledTextInput" class="form-control" :placeholder="expo.technique">
                                     </div>                                    
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="mb-3">
                                     <label for="disabledTextInput" class="form-label">Descipción:</label>
-                                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder= expo.description></textarea>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" :placeholder="expo.description"></textarea>
                                 </div>                                
                             </div>  
                         </div>
