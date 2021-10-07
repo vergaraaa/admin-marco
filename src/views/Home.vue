@@ -3,14 +3,14 @@
         <h3>Bienvenido como te llames</h3>
         <h1 class="font-weight-bold">#MuseoDeTodos</h1>
         <div class="row">
-            <div class="col-4">
-                <img src="logo.png" class="img-fluid">
-                <div class="d-grid gap-2">
-                    <a class="btn btn-dark" href="http://localhost:8080/about" role="button" >Administrar colaboradores</a>
-                    <a class="btn btn-dark" href="http://localhost:8080/expos" role="button">Administrar exposiciones</a>
+            <div class="col-5">
+                <img src="fondo_marco.jpg" class="img-fluid p-3">
+                <div class="d-grid gap-4">
+                    <a class="btn btn-dark p-3 m-1" href="http://localhost:8080/about" role="button" >Administrar colaboradores</a>
+                    <a class="btn btn-dark p-3 m-1" href="http://localhost:8080/expos" role="button">Administrar exposiciones</a>
                 </div>
             </div>
-            <div class="col-8" style="background: red;">
+            <div class="col-7" style="background: red;">
                 <h2 class="text-center">Exposiciones del mes</h2>
                 <div class="row-2" style="background: pink;">
                         <h3 class="text-center"> MES </h3>
@@ -20,6 +20,7 @@
                 </div>
                 <div class="row" style="background: green;" >
                         <h3 class="text-center"> Menú de la semana: </h3>
+                        <input class="form-control" id="linkRestaurante" placeholder="menu.url????">
                 </div>
             </div>
         </div>      

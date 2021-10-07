@@ -65,7 +65,7 @@
                             <div class="row">
                                 <div class="mb-3">
                                     <label for="disabledTextInput" class="form-label">Descipción:</label>
-                                    <input type="text" id="disabledTextInput" class="form-control" placeholder="expo.description">
+                                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder= expo.description></textarea>
                                 </div>                                
                             </div>  
                         </div>
