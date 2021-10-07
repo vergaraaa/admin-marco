@@ -29,9 +29,6 @@
 <script>
 
 export default {
-    name: 'Home',
-    created(){
-        document.body.style.background = "#f4ede7";
-    }
+    name: 'Home'
 }
 </script>

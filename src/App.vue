@@ -11,6 +11,9 @@ import Nav from '@/components/Nav.vue';
 export default {
     components:{
         Nav
+    },
+    created(){
+        document.body.style.background = "#f4ede7";
     }
 }
 
