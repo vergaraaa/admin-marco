@@ -25,6 +25,13 @@ const routes = [
         meta: { requiresAuth: true },
     },
     {
+        path: '/expos/create',
+        name: 'ExposCreate',
+        component: ExpoDetail,
+        props: true,
+        meta: { requiresAuth: true },
+    },
+    {
         path: '/expos/:id',
         name: 'ExpoDetail',
         component: ExpoDetail,
