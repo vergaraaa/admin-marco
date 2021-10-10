@@ -5,7 +5,7 @@
                 <div class="col-md-6" v-for="expo in expos" :key="expo._id">
                     <router-link :to="{ name: 'ExpoDetail', params: { id: expo._id }}" class="text-decoration-none text-black">
                         <div class="card mb-5">
-                            <img :src="expo.images[0]" style="" class="card-img-top">
+                            <img :src="expo.images[0]" style="height: 20rem;" class="card-img-top">
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{expo.name}}</h5>
                                 <p class="card-text">{{expo.author}}</p>
@@ -37,7 +37,8 @@ export default {
     },
     methods:{
         async getExpos(){
-            const response = await fetch("https://api-marco.herokuapp.com/api/expos");
+            // const response = await fetch("https://api-marco.herokuapp.com/api/expos");
+            const response = await fetch("http://localhost:3000/api/expos");
             const data = await response.json();
             this.expos = data;
         }

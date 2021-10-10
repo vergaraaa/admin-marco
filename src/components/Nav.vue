@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-marco">
     <div class="container">
-        <router-link class="navbar-brand" :to="{ name: 'Home' }"><img src="logo_marco.png" style="width: 125px"></router-link>
+        <router-link class="navbar-brand" :to="{ name: 'Home' }"><img src="../../public/logo_marco.png" style="width: 125px"></router-link>
         <button @click="handleToggle" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
@@ -11,7 +11,7 @@
                     <i class="fas fa-user-shield mx-1"></i> 
                     Marco Admin
                 </router-link>
-                <router-link :to="{ name: 'Colaborators' }" class="nav-link px-3" :class="'Colaborators' === $route.name ? 'active': ''">
+                <router-link :to="{ name: 'Collaborators' }" class="nav-link px-3" :class="'Collaborators' === $route.name ? 'active': ''">
                     <i class="fas fa-users mx-1"></i>
                     Colaboradores
                 </router-link>
