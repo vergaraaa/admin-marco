@@ -6,29 +6,21 @@
                 <div class="row">
                     <div class="col-md-4">
                         <!-- IMAGEN DE PORTADA FROM NEW EXPO -->
-                        <img v-if="images.length" :src="images[0]" class="d-block w-100 mb-3" style="height: 15rem;">
-                        <!-- INPUT FROM NEW EXPO -->
-                        <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" required :disabled="!isEditing">
-                        <!-- IMAGEN DE PORTADA FROM EXPO -->
-                        <img v-if="expo.name && !images.length" :src="expo.images[0]" class="d-block w-100 mb-3" style="height: 15rem;">
+                        <img v-if="coverImage || !isNewExpo" :src="coverImage" class="d-block w-100 mb-3" style="height: 15rem;">
+
                         <!-- INPUT FROM EXPO -->
-                        <input v-if="!isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" required :disabled="!isEditing">
+                        <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" required :disabled="!isEditing">
+                        <input v-else type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" :disabled="!isEditing">
                         <p class="form-text mb-5">Esta será la imagen que aparecerá como portada de la exposición.</p>
 
                         <!-- CARROUSEL -->
-                        <template v-if="images.length > 1 || expo.images > 1">
+                        <template v-if="images.length">
                             <div class="row mb-3">
                                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
                                         <!-- IF IMAGES FROM NEW EXPO -->
                                         <template v-if="images.length">
-                                            <div v-for="(image, index) in getOtherImages" :key="index"  class="carousel-item" :class="index === 0 ? 'active': ''">
-                                                <img :src="image" class="d-block w-100" style="height:15rem;">
-                                            </div>
-                                        </template>
-                                        <!-- ELSE IF IMAGES FROM EXPO -->
-                                        <template v-else-if="expo.name">
-                                            <div v-for="(image, index) in getOtherImages" :key="index"  class="carousel-item" :class="index === 0 ? 'active': ''">
+                                            <div v-for="(image, index) in images" :key="index"  class="carousel-item" :class="index === 0 ? 'active': ''">
                                                 <img :src="image" class="d-block w-100" style="height:15rem;">
                                             </div>
                                         </template>
@@ -114,12 +106,13 @@
                         <div class="row mb-5">
                             <div class="col-md-12">
                                 <!-- BOTONES -->
-                                <!-- SI EX NUEVA EXPO -->
+                                <!-- SI ES NUEVA EXPO -->
                                 <template v-if="!id">
                                     <div class="d-grid col-4 mx-auto">
                                         <button class="btn btn-success" type="submit">Guardar</button>
                                     </div>
                                 </template>
+                                <!-- SI YA EXISTE LA EXPO -->
                                 <template v-else-if="expo.name">
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                                         <button v-if="isEditing" type="submit" class="btn btn-success px-5">
@@ -204,6 +197,7 @@ export default {
             expo: new Expo(),
             isNewExpo: true,
             isEditing: true,
+            coverImage: "",
             images: []
         }
     },
@@ -212,7 +206,6 @@ export default {
             this.getExpo();
             this.isNewExpo = false;
             this.isEditing = false;
-            console.log(this.isNewExpo);
         }
     },
     methods: {
@@ -234,6 +227,11 @@ export default {
                 data.technique,
                 data.totalPieces
             );
+            this.coverImage = this.expo.images[0];
+            this.images = [];
+            for(let i = 1; i < this.expo.images.length; i++){
+                this.images.push(this.expo.images[i]);
+            }
         },
         async deleteExpo(){
             const requestOptions = {
@@ -248,14 +246,37 @@ export default {
                 this.getExpo();
             }
             this.handleToggle();
-            this.images = [];
             document.getElementById("files").value = "";
             document.getElementById("file").value = "";
         },
         async handleUpload() {
             const formData = new FormData();
-            formData.append("files", document.getElementById("file").files[0]);
-            if(this.isNewExpo || this.images !== []){
+
+            if(!this.isNewExpo){
+                if(this.coverImage === this.expo.images[0]){
+                    formData.append("coverImage", this.coverImage);
+                }
+                else{
+                    formData.append("files", document.getElementById("file").files[0]);
+                }
+
+                const expoImages = this.expo.images;
+                expoImages.shift();
+                if(this.images[0] === expoImages[0]){
+                    console.log("images y expo images son la misma");
+                    for (var i = 0; i < this.images.length; i++) {
+                        formData.append('otherImages[]', this.images[i]);
+                        console.log(this.images[i]);
+                    }
+                }
+                else{
+                    for (const i of Object.keys(document.getElementById("files").files)) {
+                        formData.append("files", document.getElementById("files").files[i]);
+                    }
+                }
+            }
+            else{
+                formData.append("files", document.getElementById("file").files[0]);
                 for (const i of Object.keys(document.getElementById("files").files)) {
                     formData.append("files", document.getElementById("files").files[i]);
                 }
@@ -263,16 +284,17 @@ export default {
 
             formData.append("name", this.expo.name);
             formData.append("author",this.expo.author);
-            formData.append("startDate",this.expo.startDate);
-            formData.append("endDate",this.expo.endDate);
-            formData.append("description",this.expo.description);
-            formData.append("virtualTourURL",this.expo.virtualTourURL);
-            formData.append("authorCapsuleURL",this.expo.authorCapsuleURL);
-            formData.append("curatorship",this.expo.curatorship);
-            formData.append("museography",this.expo.museography);
-            formData.append("location",this.expo.location);
-            formData.append("technique",this.expo.technique);
-            formData.append("totalPieces",this.expo.totalPieces);
+            formData.append("startDate", this.expo.startDate);
+            formData.append("endDate", this.expo.endDate);
+            formData.append("description", this.expo.description);
+            formData.append("virtualTourURL", this.expo.virtualTourURL);
+            formData.append("authorCapsuleURL", this.expo.authorCapsuleURL);
+            formData.append("curatorship", this.expo.curatorship);
+            formData.append("museography", this.expo.museography);
+            formData.append("location", this.expo.location);
+            formData.append("technique", this.expo.technique);
+            formData.append("totalPieces", this.expo.totalPieces);
+
             const requestOptions = {
                 method: this.isNewExpo ? "POST" : "PUT",
                 body: formData
@@ -285,42 +307,36 @@ export default {
                 // const response = await fetch("https://api-marco.herokuapp.com/api/expos/", requestOptions);
                 await fetch("http://localhost:3000/api/expos/" + this.id, requestOptions);
             }
-            this.$router.push({ name: "Expos" });
+            // this.$router.push({ name: "Expos" });
         },
         handleToggle(){
             this.isEditing = !this.isEditing;
         },
         onFileChange(event) {
-            // this.images = [];
             var input = event.target;
             var count = input.files.length;
             var index = 0;
-            if(input.name === "files"){
-                if(this.images.length === 0){
-                    this.images.push(this.expo.images[0]);
-                }
-                if (input.files) {
-                    while(count--) {
-                        var reader = new FileReader();
-                        reader.onload = (e) => {
-                            this.images.push(e.target.result);
-                        }
-                        reader.readAsDataURL(input.files[index]);
-                        index++;
-                    }
-                }
-            }
-            else if(input.name === "file"){
+            var reader;
+
+            if(input.name === "file"){
                 reader = new FileReader();
+                this.coverImage = event.target.result;
                 reader.onload = (e) => {
-                    if(this.images.length === 0){
-                        this.images[0] = e.target.result;
-                    }
-                    else{
-                        this.images.push(e.target.result);
-                    }
+                    this.coverImage = e.target.result;
                 }
                 reader.readAsDataURL(input.files[index]);
+                index++;
+            }
+            else if(input.name === "files"){
+                this.images = [];
+                while(count--) {
+                    reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.images.push(e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[index]);
+                    index++;
+                }
             }
         }
     },
@@ -348,4 +364,34 @@ export default {
     height: 50px;
     /* color: #ec179b; */
 }
+
+/* 
+coverImage
+images
+
+if new expo
+coverImage = file
+images = files
+
+on create
+append file and files
+
+
+else
+coverImage = expo.images[0];
+images = expo.images[1,n];
+
+update
+si cambia la foto de portada
+
+si no cambia la foto de portada
+
+si cambia las demás fotos
+
+si no cambia las demás fotos
+
+
+
+
+*/
 </style>
