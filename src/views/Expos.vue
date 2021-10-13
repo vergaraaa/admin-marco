@@ -4,12 +4,23 @@
             <div class="row">
                 <div class="col-md-6" v-for="expo in expos" :key="expo._id">
                     <router-link :to="{ name: 'ExpoDetail', params: { id: expo._id }}" class="text-decoration-none text-black">
-                        <div class="card mb-5">
+                        <div class="card mb-5" style="height: 28rem">
                             <img :src="expo.images[0]" style="height: 20rem;" class="card-img-top">
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{expo.name}}</h5>
                                 <p class="card-text">{{expo.author}}</p>
                                 <p class="card-text"><small class="text-muted">{{expo.startDate}} - {{expo.endDate}}</small></p>
+                            </div>
+                        </div>
+                    </router-link>
+                </div>
+                <div class="col-md-6">
+                    <router-link :to="{ name: 'ExposCreate' }" class="text-decoration-none text-black">
+                        <div class="mb-5 d-flex" style="height: 28rem">
+                            <div class="row mx-auto d-flex align-items-center justify-content-center">
+                                <div class="col">
+                                    <i class="fas fa-plus-circle fa-10x mb-3" style="color: lightgray"></i>
+                                </div>
                             </div>
                         </div>
                     </router-link>
