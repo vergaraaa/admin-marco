@@ -45,53 +45,53 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nombre de la exposición:</label>
-                                    <input type="text" class="form-control" id="name" v-model="expo.name" :disabled="!isEditing">
+                                    <input type="text" class="form-control" id="name" v-model="expo.name" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="author" class="form-label">Autor:</label>
-                                    <input type="text" class="form-control" id="author" v-model="expo.author" :disabled="!isEditing">
+                                    <input type="text" class="form-control" id="author" v-model="expo.author" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="startDate" class="form-label">Fecha de inicio:</label>
-                                    <input type="text" class="form-control" id="startDate" v-model="expo.startDate" :disabled="!isEditing" placeholder="Ex. 20 de Octubre de 2020">
+                                    <input type="text" class="form-control" id="startDate" v-model="expo.startDate" :disabled="!isEditing" required placeholder="Ex. 20 de Octubre de 2020">
                                 </div>
                                 <div class="mb-3">
                                     <label for="endDate" class="form-label">Fecha de conclusión:</label>
-                                    <input type="text" class="form-control" id="endDate" v-model="expo.endDate" :disabled="!isEditing" placeholder="Ex. 20 de Octubre de 2020">
+                                    <input type="text" class="form-control" id="endDate" v-model="expo.endDate" :disabled="!isEditing" required placeholder="Ex. 20 de Octubre de 2020">
                                 </div>
                                 <div class="mb-3">
                                     <label for="virtualTourURL" class="form-label">URL del tour virtual:</label>
-                                    <input type="text" class="form-control" id="virtualTourURL" v-model="expo.virtualTourURL" :disabled="!isEditing">
+                                    <input type="text" class="form-control" id="virtualTourURL" v-model="expo.virtualTourURL" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="audio" class="form-label">Audio:</label>
-                                    <input type="text" class="form-control" id="audio" :disabled="!isEditing">
+                                    <input type="text" class="form-control" id="audio" :disabled="!isEditing" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="curatorship" class="form-label">Curadores:</label>
-                                    <input type="text" class="form-control" id="curatorship" v-model="expo.curatorship" :disabled="!isEditing">
+                                    <input type="text" class="form-control" id="curatorship" v-model="expo.curatorship" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="museography" class="form-label">Museografía:</label>
-                                    <input type="text" class="form-control" id="museography" v-model="expo.museography" :disabled="!isEditing">
+                                    <input type="text" class="form-control" id="museography" v-model="expo.museography" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="location" class="form-label">Ubicación:</label>
-                                    <input type="text" class="form-control" id="location" v-model="expo.location" :disabled="!isEditing">
+                                    <input type="text" class="form-control" id="location" v-model="expo.location" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="totalPieces" class="form-label">Total de piezas:</label>
-                                    <input type="text" class="form-control" id="totalPieces" v-model="expo.totalPieces" :disabled="!isEditing">
+                                    <input type="text" class="form-control" id="totalPieces" v-model="expo.totalPieces" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="authorCapsuleURL" class="form-label">URL de la cápsula del autor:</label>
-                                    <input type="text" class="form-control" id="authorCapsuleURL" v-model="expo.authorCapsuleURL" :disabled="!isEditing">
+                                    <input type="text" class="form-control" id="authorCapsuleURL" v-model="expo.authorCapsuleURL" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="technique" class="form-label">Técnica:</label>
-                                    <input type="text" class="form-control" id="technique" v-model="expo.technique" :disabled="!isEditing">
+                                    <input type="text" class="form-control" id="technique" v-model="expo.technique" :disabled="!isEditing" required>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Descripción:</label>
-                                    <textarea class="form-control" id="description" rows="5" v-model="expo.description" :disabled="!isEditing"></textarea>
+                                    <textarea class="form-control" id="description" rows="5" v-model="expo.description" :disabled="!isEditing" required></textarea>
                                 </div>  
                             </div>
                         </div>
@@ -307,7 +307,7 @@ export default {
                 // const response = await fetch("https://api-marco.herokuapp.com/api/expos/", requestOptions);
                 await fetch("http://localhost:3000/api/expos/" + this.id, requestOptions);
             }
-            // this.$router.push({ name: "Expos" });
+            this.$router.push({ name: "Expos" });
         },
         handleToggle(){
             this.isEditing = !this.isEditing;
