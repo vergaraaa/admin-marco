@@ -21,5 +21,12 @@ export default {
 
 
 <style>
+.btn:active, .btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(236, 23, 155, 0.5) !important;
+}
 
+.form-control:active, .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(236, 23, 155, 0.5) !important;
+    border-color: #ec179b;
+}
 </style>
