@@ -4,6 +4,8 @@ import Collaborators from '../views/Collaborators.vue'
 import Login from '../views/Login.vue'
 import Expos from '../views/Expos.vue'
 import ExpoDetail from '../views/ExpoDetail.vue'
+import Guides from '../views/Guides.vue'
+import Activities from '../views/Activities.vue'
 
 const routes = [
     {
@@ -36,6 +38,18 @@ const routes = [
         name: 'ExpoDetail',
         component: ExpoDetail,
         props: true,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/guides',
+        name: 'Guides',
+        component: Guides,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/activities',
+        name: 'Activities',
+        component: Activities,
         meta: { requiresAuth: true }
     },
     {

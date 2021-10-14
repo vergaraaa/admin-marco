@@ -15,15 +15,15 @@
                     </router-link>
                 </div>
                 <div class="col-md-6">
-                    <router-link :to="{ name: 'ExposCreate' }" class="text-decoration-none text-black">
-                        <div class="mb-5 d-flex" style="height: 28rem">
-                            <div class="row mx-auto d-flex align-items-center justify-content-center">
-                                <div class="col">
+                    <div class="mb-5 d-flex" style="height: 28rem">
+                        <div class="row mx-auto d-flex align-items-center justify-content-center">
+                            <div class="col">
+                                <router-link :to="{ name: 'ExposCreate' }" class="text-decoration-none text-black">
                                     <i class="fas fa-plus-circle fa-10x mb-3" style="color: lightgray"></i>
-                                </div>
+                                </router-link>
                             </div>
                         </div>
-                    </router-link>
+                    </div>
                 </div>
             </div>
         </template>
@@ -49,7 +49,9 @@ export default {
     methods:{
         async getExpos(){
             // const response = await fetch("https://api-marco.herokuapp.com/api/expos");
-            const response = await fetch("http://localhost:3000/api/expos");
+            // const response = await fetch("http://localhost:3000/api/expos");
+            // const response = await fetch("http://172.31.0.24:10021/api/expos/");
+            const response = await fetch("http://100.24.228.237:10021/api/expos/");
             const data = await response.json();
             this.expos = data;
         }
