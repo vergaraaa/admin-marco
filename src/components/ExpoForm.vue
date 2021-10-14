@@ -210,7 +210,7 @@ export default {
     },
     methods: {
         async getExpo(){
-            const response = await fetch("https://api-marco.herokuapp.com/api/expos/" + this.id );
+            const response = await fetch("http://172.31.0.24:10021/api/expos/" + this.id );
             const data = await response.json();
             this.expo = new Expo(
                 data.name,
@@ -238,7 +238,9 @@ export default {
                 method: "DELETE"
             }
             // await fetch("https://api-marco.herokuapp.com/api/expos/" + this.id, requestOptions);
-            await fetch("http://localhost:3000/api/expos/" + this.id, requestOptions);
+            // await fetch("http://localhost:3000/api/expos/" + this.id, requestOptions);
+            // await fetch("http://172.31.0.24:10021/api/expos/" + this.id, requestOptions);
+            await fetch("http://100.24.228.237:10021/api/expos/" + this.id, requestOptions);
             this.$router.push({ name: "Expos" });
         },
         handleClickToggle(){
@@ -301,11 +303,14 @@ export default {
             }
             if(this.isNewExpo){
                 // const response = await fetch("https://api-marco.herokuapp.com/api/expos/", requestOptions);
-                await fetch("http://localhost:3000/api/expos/", requestOptions);
+                // await fetch("http://localhost:3000/api/expos/", requestOptions);
+                // await fetch("http://172.31.0.24:10021/api/expos/", requestOptions);
+                await fetch("http://100.24.228.237:10021/api/expos/", requestOptions);
             }
             else{
                 // const response = await fetch("https://api-marco.herokuapp.com/api/expos/", requestOptions);
-                await fetch("http://localhost:3000/api/expos/" + this.id, requestOptions);
+                // await fetch("http://localhost:3000/api/expos/" + this.id, requestOptions);
+                await fetch("http://100.24.228.237:10021/api/expos/" + this.id, requestOptions);
             }
             this.$router.push({ name: "Expos" });
         },
@@ -365,33 +370,4 @@ export default {
     /* color: #ec179b; */
 }
 
-/* 
-coverImage
-images
-
-if new expo
-coverImage = file
-images = files
-
-on create
-append file and files
-
-
-else
-coverImage = expo.images[0];
-images = expo.images[1,n];
-
-update
-si cambia la foto de portada
-
-si no cambia la foto de portada
-
-si cambia las demás fotos
-
-si no cambia las demás fotos
-
-
-
-
-*/
 </style>
