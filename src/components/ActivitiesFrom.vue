@@ -154,7 +154,7 @@ export default {
     methods: {
         async getActi(){
             //Fetch de donde
-            const response = await fetch("https://api-marco.herokuapp.com/api/4ctiviti3s/" + this.id );
+            const response = await fetch("http://100.24.228.237:10021/api/activities/" + this.id );
             const data = await response.json();
             this.acti = new Acti(
                 data.name,
@@ -172,7 +172,7 @@ export default {
             const requestOptions = {
                 method: "DELETE"
             }
-            await fetch("http://localhost:3000/api/4ctiviti3s/" + this.id, requestOptions);
+            await fetch("http://100.24.228.237:10021/api/activities/" + this.id, requestOptions);
             this.$router.push({ name: "Acti" });
         },
         handleClickToggle(){
@@ -204,10 +204,10 @@ export default {
                 body: formData
             }
             if(this.isNewActi){
-                await fetch("http://localhost:3000/api/4ctiviti3s/", requestOptions);
+                await fetch("http://100.24.228.237:10021/api/activities/", requestOptions);
             }
             else{
-                await fetch("http://localhost:3000/api/4ctiviti3s/" + this.id, requestOptions);
+                await fetch("http://100.24.228.237:10021/api/activities/" + this.id, requestOptions);
             }
             this.$router.push({ name: "Activities" });
         },
