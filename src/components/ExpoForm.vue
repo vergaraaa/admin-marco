@@ -210,7 +210,7 @@ export default {
     },
     methods: {
         async getExpo(){
-            const response = await fetch("http://172.31.0.24:10021/api/expos/" + this.id );
+            const response = await fetch("http://100.24.228.237:10021//api/expos/" + this.id );
             const data = await response.json();
             this.expo = new Expo(
                 data.name,

@@ -59,10 +59,12 @@ export default {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(this.form)
             };
-            const response = await fetch("https://api-marco.herokuapp.com/api/users/login/admin", requestOptions);
+            const response = await fetch("http://100.24.228.237:10021/api/users/login/admin", requestOptions);
             const data = await response.json();
             if(data.token){
                 localStorage.setItem("token", data.token);
+                localStorage.setItem("id", data.user._id);
+                localStorage.setItem("usertype", data.user.usertype);
                 this.$router.push({ name: 'Home' });
             }
             else{

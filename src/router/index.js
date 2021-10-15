@@ -18,7 +18,7 @@ const routes = [
         path: '/collaborators',
         name: 'Collaborators',
         component: Collaborators,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
         path: '/expos',
@@ -67,9 +67,10 @@ const router = createRouter({
 
 router.beforeEach(async function(to, _, next){
     const token = localStorage.getItem("token");
+    const usertype = localStorage.getItem("usertype");
     if (to.meta.requiresAuth && !token) { // Si no esta autenticado
         next({ name: 'Login' });
-    } else if (to.meta.requiresUnauth && token) { // Si esta atenticado y quiere acceder al login
+    } else if (to.meta.requiresUnauth && token || to.meta.requiresAdmin && !usertype.includes("admin")) { // Si esta atenticado y quiere acceder al login
         next({ name: 'Home' });
     } else {
         next();
