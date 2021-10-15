@@ -3,7 +3,7 @@
         <template v-if="activities.length">
             <div class="row">
                 <div class="col-md-6" v-for="activity in activities" :key="activity._id">
-                    <router-link :to="{ name: 'ExpoDetail', params: { id: activity._id }}" class="text-decoration-none text-black">
+                    <router-link :to="{ name: 'ActivityDetail', params: { id: activity._id }}" class="text-decoration-none text-black">
                         <div class="card mb-5" style="height: 28rem">
                             <img :src="activity.image" style="height: 20rem;" class="card-img-top">
                             <div class="card-body text-center">
@@ -18,7 +18,7 @@
                     <div class="mb-5 d-flex" style="height: 28rem">
                         <div class="row mx-auto d-flex align-items-center justify-content-center">
                             <div class="col">
-                                <router-link :to="{ name: 'ExposCreate' }" class="text-decoration-none text-black">
+                                <router-link :to="{ name: 'ActivityCreate' }" class="text-decoration-none text-black">
                                     <i class="fas fa-plus-circle fa-10x mb-3" style="color: lightgray"></i>
                                 </router-link>
                             </div>

@@ -6,6 +6,7 @@ import Expos from '../views/Expos.vue'
 import ExpoDetail from '../views/ExpoDetail.vue'
 import Guides from '../views/Guides.vue'
 import Activities from '../views/Activities.vue'
+import ActivityDetail from '../views/ActivitiesDetail.vue'
 
 const routes = [
     {
@@ -21,10 +22,35 @@ const routes = [
         meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
+        path: '/guides',
+        name: 'Guides',
+        component: Guides,
+        meta: { requiresAuth: true }
+    },
+    {
         path: '/expos',
         name: 'Expos',
         component: Expos,
         meta: { requiresAuth: true },
+    },
+    {
+        path: '/activities',
+        name: 'Activities',
+        component: Activities,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/activities/create',
+        name: 'ActivityCreate',
+        component: ActivityDetail,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/activities/:id',
+        name: 'ActivityDetail',
+        component: ActivityDetail,
+        props: true,
+        meta: { requiresAuth: true }
     },
     {
         path: '/expos/create',
@@ -38,18 +64,6 @@ const routes = [
         name: 'ExpoDetail',
         component: ExpoDetail,
         props: true,
-        meta: { requiresAuth: true }
-    },
-    {
-        path: '/guides',
-        name: 'Guides',
-        component: Guides,
-        meta: { requiresAuth: true }
-    },
-    {
-        path: '/activities',
-        name: 'Activities',
-        component: Activities,
         meta: { requiresAuth: true }
     },
     {

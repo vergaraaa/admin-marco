@@ -6,11 +6,11 @@
                 <div class="row">
                     <div class="col-md-4">
                         <!-- IMAGEN DE PORTADA FROM NEW ACTIVITY -->
-                        <img v-if="coverImage || !isNewActi" :src="coverImage" class="d-block w-100 mb-3" style="height: 15rem;">
+                        <img v-if="coverImage || !isNewActivity" :src="coverImage" class="d-block w-100 mb-3" style="height: 15rem;">
 
                         <!-- INPUT FROM ACTIVITY -->
-                        <input v-if="isNewActivity" type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" required :disabled="!isEditing">
-                        <input v-else type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" :disabled="!isEditing">
+                        <input v-if="isNewActivity" type="file" accept="image/*" class="form-control mb-3" name="files" id="files" @change="onFileChange" required :disabled="!isEditing">
+                        <input v-else type="file" accept="image/*" class="form-control mb-3" name="files" id="files" @change="onFileChange" :disabled="!isEditing">
                         <p class="form-text mb-5">Esta será la imagen que aparecerá como portada de la actividad.</p>
                     </div>
 
@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="hour" class="form-label">Hora de inicio:</label>
-                                    <input type="text" class="form-control" id="hour" v-model="acti.authorCapsuleURL" :disabled="!isEditing" required>
+                                    <input type="text" class="form-control" id="hour" v-model="acti.hour" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="location" class="form-label">Ubicación:</label>
@@ -121,7 +121,7 @@
 <script>
 
 class Acti {
-        constructor(name, author, startDate, description, hour, location, organizer, image) {
+        constructor(name, author, startDate, description, image, hour, location, organizer) {
             this.name = name;
             this.author = author;
             this.startDate = startDate;
@@ -139,7 +139,7 @@ export default {
     data() {
         return {
             acti: new Acti(),
-            isNewActi: true,
+            isNewActivity: true,
             isEditing: true,
             coverImage: "",
         }
@@ -166,7 +166,7 @@ export default {
                 data.location,
                 data.organizer,
             );
-            this.coverImage = this.acti.image;
+            this.coverImage = data.image;
         },
         async deleteActi(){
             const requestOptions = {
@@ -180,7 +180,7 @@ export default {
                 this.getActi();
             }
             this.handleToggle();
-            document.getElementById("file").value = "";
+            document.getElementById("files").value = "";
         },
         async handleUpload() {
             const formData = new FormData();
@@ -217,17 +217,12 @@ export default {
         onFileChange(event) {
             var input = event.target;
             var index = 0;
-            var reader;
-
-            if(input.name === "file"){
-                reader = new FileReader();
-                this.coverImage = event.target.result;
-                reader.onload = (e) => {
-                    this.coverImage = e.target.result;
-                }
-                reader.readAsDataURL(input.file);
-                index++;
+            var reader = new FileReader();
+            reader.onload = (e) => {
+                this.coverImage = e.target.result;
             }
+            reader.readAsDataURL(input.files[index]);
+            index++;
         }
     }
 }

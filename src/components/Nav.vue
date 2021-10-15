@@ -19,7 +19,7 @@
                     <i class="fas fa-info-circle"></i>
                     Guías
                 </router-link>
-                <router-link :to="{ name: 'Activities' }" class="nav-link px-4" :class="'Expos' === $route.name ? 'active': ''">
+                <router-link :to="{ name: 'Activities' }" class="nav-link px-4" :class="'Activities' === $route.name ? 'active': ''">
                     <i class="far fa-newspaper"></i>
                     Actividades
                 </router-link>
