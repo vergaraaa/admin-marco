@@ -16,7 +16,7 @@
                                             <td style="width: 75%">{{collaborator.name}} {{collaborator.lastname}}</td>
                                             <td style="width: 25%" class="text-center">
                                                 <i class="fas fa-edit px-2 text-primary" style="cursor: pointer;"  @click="handleEdit(collaborator._id)"></i>
-                                                <i class="fas fa-trash-alt px-2 text-danger" style="cursor: pointer;" @click="handleDelete(collaborator._id)"
+                                                <i class="fas fa-trash-alt px-2 text-danger" style="cursor: pointer;"
                                                     data-dismiss="modalDelete" data-bs-toggle="modal" data-bs-target="#modalDelete"></i>
                                             </td>
                                         </tr>
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <div class="d-grid col-4 mx-auto">
-                                            <button class="btn btn-success" type="submit">Guardar</button>
+                                            <button class="btn btn-success" type="submit">Registrar</button>
                                         </div>
                                     </div>
                                 </form>
@@ -87,7 +87,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalCenterTitle">¿Estás seguro de que quieres eliminar {{expo.name}} de {{expo.author}}?</h6>
+                        <h6 class="modal-title" id="exampleModalCenterTitle">¿Estás seguro de que quieres eliminar {{collaborator.name}} {{collaborator.lastname}}?</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -95,7 +95,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteExpo">Delete</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="handleDelete(collaborator._id)">Delete</button>
                     </div>
                 </div>
             </div>
