@@ -28,12 +28,6 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: '/expos',
-        name: 'Expos',
-        component: Expos,
-        meta: { requiresAuth: true },
-    },
-    {
         path: '/activities',
         name: 'Activities',
         component: Activities,
@@ -51,6 +45,12 @@ const routes = [
         component: ActivityDetail,
         props: true,
         meta: { requiresAuth: true }
+    },
+    {
+        path: '/expos',
+        name: 'Expos',
+        component: Expos,
+        meta: { requiresAuth: true },
     },
     {
         path: '/expos/create',
