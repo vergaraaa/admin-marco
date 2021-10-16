@@ -147,7 +147,7 @@ export default {
     created (){
         if(this.id){
             this.getActi();
-            this.isNewActi = false;
+            this.isNewActivity = false;
             this.isEditing = false;
         }
     },
@@ -173,7 +173,7 @@ export default {
                 method: "DELETE"
             }
             await fetch("http://100.24.228.237:10021/api/activities/" + this.id, requestOptions);
-            this.$router.push({ name: "Acti" });
+            this.$router.push({ name: "Activities" });
         },
         handleClickToggle(){
             if(this.isEditing){
@@ -185,10 +185,16 @@ export default {
         async handleUpload() {
             const formData = new FormData();
 
-            if(!this.isNewActi){
+            if(!this.isNewActivity){
                 if(this.coverImage === this.acti.image){
                     formData.append("coverImage", this.coverImage);
                 }
+                else{
+                    formData.append("files", document.getElementById("files").files[0])
+                }
+            }
+            else{
+                formData.append("files", document.getElementById("files").files[0])    
             }
 
             formData.append("name", this.acti.name);
@@ -200,10 +206,10 @@ export default {
             formData.append("organizer", this.acti.organizer);
 
             const requestOptions = {
-                method: this.isNewActi ? "POST" : "PUT",
+                method: this.isNewActivity ? "POST" : "PUT",
                 body: formData
             }
-            if(this.isNewActi){
+            if(this.isNewActivity){
                 await fetch("http://100.24.228.237:10021/api/activities/", requestOptions);
             }
             else{
