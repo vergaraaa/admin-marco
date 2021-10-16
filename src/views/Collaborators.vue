@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="row px-4 pb-4 bg-marco">
-                    <h3 class="text-center" style="color: white;"> Colaboradores activos </h3>
+                    <h3 class="text-center p-3" style="color: white;"> Colaboradores activos </h3>
                     <div class="col align-self-center" style="background: white;">
                         <template v-if="dataLoaded">
                             <template v-if="collaborators.length">
@@ -15,8 +15,8 @@
                                         <tr v-for="(collaborator, index) in collaborators" :key="index">
                                             <td style="width: 75%">{{collaborator.name}} {{collaborator.lastname}}</td>
                                             <td style="width: 25%" class="text-center">
-                                                <i class="fas fa-edit px-2 text-primary" style="cursor: pointer;"  @click="handleEdit(collaborator._id)"></i>
-                                                <i class="fas fa-trash-alt px-2 text-danger" style="cursor: pointer;"
+                                                <i class="fas fa-edit px-2 text-primary" style="cursor: pointer;"  @click="handleClickEdit(collaborator._id)"></i>
+                                                <i class="fas fa-trash-alt px-2 text-danger" style="cursor: pointer;" @click="handleClickDelete(collaborator._id, index)"
                                                     data-dismiss="modalDelete" data-bs-toggle="modal" data-bs-target="#modalDelete"></i>
                                             </td>
                                         </tr>
@@ -48,7 +48,7 @@
             </div>
             <div class="col-md-5 offset-md-2">
                 <div class="row px-4 pb-4 bg-marco">
-                    <h3 class="text-center" style="color: white;"> Registro de colaboradores </h3>
+                    <h3 class="text-center p-3" style="color: white;"> Registro de colaboradores </h3>
                     <div class="col align-self-center" style="background: white;">
                         <div class="row mt-3">
                             <div class="col-md-11 mx-auto">
@@ -70,8 +70,17 @@
                                         <input type="password" class="form-control" id="password" v-model="collaborator.password" required>
                                     </div>
                                     <div class="mb-3">
-                                        <div class="d-grid col-4 mx-auto">
-                                            <button class="btn btn-success" type="submit">Registrar</button>
+                                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                            <button v-if="isEditing" type="submit" class="btn btn-success px-5">
+                                                Guardar 
+                                            </button>
+                                            <button v-else type="submit" class="btn btn-primary px-5">
+                                                Registrar
+                                            </button>
+                                            <!-- BUTTON TRIGGER MODAL -->
+                                            <button type="button" class="btn btn-danger px-5" @click="handleClickToggle">
+                                                Cancelar
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
@@ -87,7 +96,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalCenterTitle">¿Estás seguro de que quieres eliminar {{collaborator.name}} {{collaborator.lastname}}?</h6>
+                        <h6 class="modal-title" id="exampleModalCenterTitle">¿Estás seguro de que quieres eliminar a {{tempName}} {{tempLastname}}?</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -121,8 +130,11 @@ export default {
             collaborator: new Collaborator(),
             collaborators: [],
             isActive: false,
-            isEditing: true,
-            dataLoaded: false
+            isEditing: false,
+            dataLoaded: false,
+            id: '',
+            tempName: '',
+            tempLastname: ''
         };
     },
     created() {
@@ -139,25 +151,59 @@ export default {
             this.dataLoaded = true;
         },
         async handleUpload(){
-            const requestOptions = {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(this.collaborator)
+            if(this.isEditing){
+                const requestOptions = {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(this.collaborator)
+                }
+                await fetch("http://100.24.228.237:10021/api/users/" + this.id, requestOptions);
             }
-            await fetch("http://100.24.228.237:10021/api/users/", requestOptions);
-            this.collaborator = new Collaborator();
+            else{
+                const requestOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(this.collaborator)
+                }
+                await fetch("http://100.24.228.237:10021/api/users/", requestOptions);
+            }
             this.getCollaborators();
+            this.isEditing = false;
+            this.collaborator = new Collaborator();
         },
-        async handleEdit(id){
-            console.log(id);
+        async handleClickEdit(id){
+            this.id = id;
+            this.isEditing = true;
+            const res = await fetch("http://100.24.228.237:10021/api/users/" + id);
+            const data = await res.json();
+            this.collaborator = new Collaborator(
+                data.name,
+                data.lastname,
+                data.email
+            );
+            console.log(this.collaborator);
         },
-        async handleDelete(id){
+        async handleEdit(){
+            console.log(this.id);
+        },
+        handleClickDelete(id, index){
+            this.id = id;
+            this.tempName = this.collaborators[index].name;
+            this.tempLastname = this.collaborators[index].lastname;
+        },
+        async handleDelete(){
             const requestOptions = {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
             }
-            await fetch('http://100.24.228.237:10021/api/users/' + id, requestOptions);
+            await fetch('http://100.24.228.237:10021/api/users/' + this.id, requestOptions);
             this.getCollaborators();
+            this.collaborator = new Collaborator();
+        },
+        handleClickToggle(){
+            this.id = "";
+            this.isEditing = false;
+            this.collaborator = new Collaborator();
         },
         toggle() {
             this.isActive = !this.isActive;
