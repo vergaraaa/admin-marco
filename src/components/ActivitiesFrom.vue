@@ -68,7 +68,7 @@
                                         <button v-if="isEditing" type="submit" class="btn btn-success px-5">
                                             Guardar 
                                         </button>
-                                        <button v-else type="submit" class="btn btn-primary px-5" @click="handleClickToggle">
+                                        <button v-else type="button" class="btn btn-primary px-5" @click="handleClickToggle">
                                             Editar
                                         </button>
                                         <!-- BUTTON TRIGGER MODAL -->

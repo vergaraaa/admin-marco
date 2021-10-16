@@ -4,7 +4,7 @@
             {{isActive ? 'Es puto' : 'Edgar'}}
         </button>
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-5 mb-5">
                 <div class="row px-4 pb-4 bg-marco">
                     <h3 class="text-center p-3" style="color: white;"> Colaboradores activos </h3>
                     <div class="col align-self-center" style="background: white;">
@@ -181,7 +181,6 @@ export default {
                 data.lastname,
                 data.email
             );
-            console.log(this.collaborator);
         },
         async handleEdit(){
             console.log(this.id);
