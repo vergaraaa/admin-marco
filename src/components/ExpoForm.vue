@@ -64,8 +64,18 @@
                                     <input type="text" class="form-control" id="virtualTourURL" v-model="expo.virtualTourURL" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="audio" class="form-label">Audio:</label>
-                                    <input type="text" class="form-control" id="audio" :disabled="!isEditing" required>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="audio" class="form-label">Audio:</label>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <input v-if="isNewExpo" type="file" class="form-control" name="audio" id="audio" accept="audio/*" @change="onFileChange" :disabled="!isEditing" required>
+                                            <input v-else type="file" class="form-control" name="audio" id="audio" accept="audio/*" @change="onFileChange" :disabled="!isEditing">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <audio class="form-control" :src="audio" controls></audio>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -171,7 +181,7 @@
 <script>
 
 class Expo {
-        constructor(name, author, startDate, endDate, description, virtualTourURL, authorCapsuleURL, images, curatorship, museography, location, technique, totalPieces) {
+        constructor(name, author, startDate, endDate, description, virtualTourURL, authorCapsuleURL, images, audio, curatorship, museography, location, technique, totalPieces) {
             this.name = name;
             this.author = author;
             this.startDate = startDate;
@@ -180,6 +190,7 @@ class Expo {
             this.virtualTourURL = virtualTourURL;
             this.authorCapsuleURL = authorCapsuleURL
             this.images = images;
+            this.audio = audio;
             this.curatorship = curatorship;
             this.museography = museography;
             this.location = location;
@@ -198,7 +209,8 @@ export default {
             isNewExpo: true,
             isEditing: true,
             coverImage: "",
-            images: []
+            images: [],
+            audio: ''
         }
     },
     created (){
@@ -221,6 +233,7 @@ export default {
                 data.virtualTourURL,
                 data.authorCapsuleURL,
                 data.images,
+                data.audio,
                 data.curatorship,
                 data.museography,
                 data.location,
@@ -229,9 +242,11 @@ export default {
             );
             this.coverImage = this.expo.images[0];
             this.images = [];
+            this.audio = this.expo.audio;
             for(let i = 1; i < this.expo.images.length; i++){
                 this.images.push(this.expo.images[i]);
             }
+            console.log(this.expo)
         },
         async deleteExpo(){
             const requestOptions = {
@@ -250,11 +265,21 @@ export default {
             this.handleToggle();
             document.getElementById("files").value = "";
             document.getElementById("file").value = "";
+            document.getElementById("audio").value = "";
         },
         async handleUpload() {
             const formData = new FormData();
 
             if(!this.isNewExpo){
+                if(this.audio === this.expo.audio){
+                    console.log("audio es el mismo")
+                    formData.append("audio", this.audio);
+                }
+                else{
+                    console.log("audio cambió")
+                    formData.append("files", document.getElementById("audio").files[0]);
+                }
+
                 if(this.coverImage === this.expo.images[0]){
                     formData.append("coverImage", this.coverImage);
                 }
@@ -265,10 +290,8 @@ export default {
                 const expoImages = this.expo.images;
                 expoImages.shift();
                 if(this.images[0] === expoImages[0]){
-                    console.log("images y expo images son la misma");
                     for (var i = 0; i < this.images.length; i++) {
                         formData.append('otherImages[]', this.images[i]);
-                        console.log(this.images[i]);
                     }
                 }
                 else{
@@ -279,6 +302,7 @@ export default {
             }
             else{
                 formData.append("files", document.getElementById("file").files[0]);
+                formData.append("files", document.getElementById("audio").files[0]);
                 for (const i of Object.keys(document.getElementById("files").files)) {
                     formData.append("files", document.getElementById("files").files[i]);
                 }
@@ -343,23 +367,33 @@ export default {
                     index++;
                 }
             }
-        }
-    },
-    computed:{
-        getOtherImages(){
-            if(this.isNewExpo){
-                return this.images.filter((image, index) => index > 0);
-            }
-            else{
-                if(this.images.length <= 1){
-                    return this.expo.images.filter((image, index) => index > 0);
+            else if(input.name === "audio"){
+                this.audio = "";
+                reader = new FileReader();
+                this.audio = event.target.result;
+                reader.onload = (e) => {
+                    this.audio = e.target.result;
                 }
-                else{
-                    return this.images.filter((image, index) => index > 0);
-                }
+                reader.readAsDataURL(input.files[index]);
+                index++;
             }
         }
-    }
+    }//,
+    // computed:{
+    //     getOtherImages(){
+    //         if(this.isNewExpo){
+    //             return this.images.filter((image, index) => index > 0);
+    //         }
+    //         else{
+    //             if(this.images.length <= 1){
+    //                 return this.expo.images.filter((image, index) => index > 0);
+    //             }
+    //             else{
+    //                 return this.images.filter((image, index) => index > 0);
+    //             }
+    //         }
+    //     }
+    // }
 }
 </script>
 

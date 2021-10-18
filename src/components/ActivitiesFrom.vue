@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="startDate" class="form-label">Fecha de inicio:</label>
-                                    <input type="text" class="form-control" id="startDate" v-model="acti.startDate" :disabled="!isEditing" required placeholder="Ex. 13 Ene 2021">
+                                    <input type="date" class="form-control" id="startDate" v-model="acti.startDate" :disabled="!isEditing" required placeholder="Ex. 13 Ene 2021">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -167,6 +167,7 @@ export default {
                 data.organizer,
             );
             this.coverImage = data.image;
+            this.acti.startDate = new Date(this.acti.startDate).toISOString().substr(0, 10);            
         },
         async deleteActi(){
             const requestOptions = {

@@ -54,7 +54,7 @@ const routes = [
     },
     {
         path: '/expos/create',
-        name: 'ExposCreate',
+        name: 'ExpoCreate',
         component: ExpoDetail,
         props: true,
         meta: { requiresAuth: true },
@@ -82,6 +82,7 @@ const router = createRouter({
 router.beforeEach(async function(to, _, next){
     const token = localStorage.getItem("token");
     const usertype = localStorage.getItem("usertype");
+
     if (to.meta.requiresAuth && !token) { // Si no esta autenticado
         next({ name: 'Login' });
     } else if (to.meta.requiresUnauth && token || to.meta.requiresAdmin && !usertype.includes("admin")) { // Si esta atenticado y quiere acceder al login

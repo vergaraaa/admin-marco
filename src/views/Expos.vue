@@ -1,33 +1,49 @@
 <template>
     <div class="container mt-5">
-        <template v-if="expos.length">
-            <div class="row">
-                <div class="col-md-6" v-for="expo in expos" :key="expo._id">
-                    <router-link :to="{ name: 'ExpoDetail', params: { id: expo._id }}" class="text-decoration-none text-black">
-                        <div class="card mb-5" style="height: 28rem">
-                            <img :src="expo.images[0]" style="height: 20rem;" class="card-img-top">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">{{expo.name}}</h5>
-                                <p class="card-text">{{expo.author}}</p>
-                                <p class="card-text"><small class="text-muted">{{expo.startDate}} - {{expo.endDate}}</small></p>
+        <template v-if="dataLoaded">
+            <template v-if="expos.length">
+                <div class="row">
+                    <div class="col-md-6" v-for="expo in expos" :key="expo._id">
+                        <router-link :to="{ name: 'ExpoDetail', params: { id: expo._id }}" class="text-decoration-none text-black">
+                            <div class="card mb-5" style="height: 28rem">
+                                <img :src="expo.images[0]" style="height: 20rem;" class="card-img-top">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{expo.name}}</h5>
+                                    <p class="card-text">{{expo.author}}</p>
+                                    <p class="card-text"><small class="text-muted">{{expo.startDate}} - {{expo.endDate}}</small></p>
+                                </div>
                             </div>
-                        </div>
-                    </router-link>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-5 d-flex" style="height: 28rem">
-                        <div class="row mx-auto d-flex align-items-center justify-content-center">
-                            <div class="col">
-                                <router-link :to="{ name: 'ExposCreate' }" class="text-decoration-none text-black">
-                                    <i class="fas fa-plus-circle fa-10x mb-3" style="color: lightgray"></i>
-                                </router-link>
+                        </router-link>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-5 d-flex" style="height: 28rem">
+                            <div class="row mx-auto d-flex align-items-center justify-content-center">
+                                <div class="col">
+                                    <router-link :to="{ name: 'ExpoCreate' }" class="text-decoration-none text-black">
+                                        <i class="fas fa-plus-circle fa-10x mb-3" style="color: lightgray"></i>
+                                    </router-link>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div class="row">
+                    <div class="col-md-12 mx-auto text-center">
+                        <p class="h3 mb-3">Parece que no hay ninguna expo...</p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <router-link :to="{ name: 'ExpoCreate' }">
+                                <button type="btn" class="btn btn-primary px-5">
+                                    ¡Agregar expo!
+                                </button>
+                            </router-link>
+                        </div>
+                    </div>
+                </div>
+            </template>
         </template>
-        <template v-else class="">
+        <template v-else>
             <div class="row">
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="spinner-border" role="status">
@@ -43,7 +59,8 @@
 export default {
     data() {
         return { 
-            expos: []
+            expos: [],
+            dataLoaded: false
         }
     },
     methods:{
@@ -54,6 +71,7 @@ export default {
             const response = await fetch("http://100.24.228.237:10021/api/expos/");
             const data = await response.json();
             this.expos = data;
+            this.dataLoaded = true;
         }
     },
     created() {
