@@ -68,7 +68,7 @@ export default {
             // const response = await fetch("https://api-marco.herokuapp.com/api/expos");
             // const response = await fetch("http://localhost:3000/api/expos");
             // const response = await fetch("http://172.31.0.24:10021/api/expos/");
-            const response = await fetch("http://100.24.228.237:10021/api/activities/");
+            const response = await fetch("http://100.24.228.237:10021/api/activities/month");
             const data = await response.json();
             this.activities = data;
             // this.activities.forEach(activity => {
