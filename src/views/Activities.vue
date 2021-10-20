@@ -3,7 +3,7 @@
         <template v-if="dataLoaded">
             <template v-if="activities.length">
                 <div class="row">
-                    <div class="col-md-6" v-for="activity in activities" :key="activity._id">
+                    <div class="col-md-3" v-for="activity in activities" :key="activity._id">
                         <router-link :to="{ name: 'ActivityDetail', params: { id: activity._id }}" class="text-decoration-none text-black">
                             <div class="card mb-5" style="height: 28rem">
                                 <img :src="activity.image" style="height: 20rem;" class="card-img-top">
@@ -15,7 +15,7 @@
                             </div>
                         </router-link>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="mb-5 d-flex" style="height: 28rem">
                             <div class="row mx-auto d-flex align-items-center justify-content-center">
                                 <div class="col">
