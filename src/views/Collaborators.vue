@@ -62,7 +62,7 @@
                                         <input type="text" class="form-control" id="lastname" v-model="collaborator.lastname" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Correo:</label>
+                                        <label for="email" class="form-label">Correo:</label>
                                         <input type="email" class="form-control" id="email" v-model="collaborator.email" required>
                                     </div>
                                     <div class="mb-3">
@@ -181,9 +181,6 @@ export default {
                 data.lastname,
                 data.email
             );
-        },
-        async handleEdit(){
-            console.log(this.id);
         },
         handleClickDelete(id, index){
             this.id = id;

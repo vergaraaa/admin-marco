@@ -15,17 +15,58 @@
                 <h2 class="text-center">Actividades del Mes</h2>
                 <div class="row px-4 pb-4 bg-marco">
                         <h3 class="text-center" style="color: white;"> {{month}} </h3>
-                        <div class="col align-self-center" style="background: white;">
+                        <div class="col align-self-center overflow-auto" style="background: white;">
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
+                            <h5 class="text-center"> Actividad prueba</h5>
                             <h5 class="text-center"> Actividad prueba</h5>
                             <h5 class="text-center"> Actividad prueba</h5>
                             <h5 class="text-center"> Actividad prueba</h5>
                             <h5 class="text-center"> Actividad prueba</h5>
                             <h5 class="text-center"> Actividad prueba</h5>
                         </div>
-                </div>
-                <div class="row pt-5">
-                        <h3 class="text-center"> Menú de la semana: </h3>
-                        <input class="form-control" id="linkRestaurante" placeholder="menu.url????">
                 </div>
             </div>
         </div>      
