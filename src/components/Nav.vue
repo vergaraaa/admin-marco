@@ -11,10 +11,12 @@
                     <i class="fas fa-user-shield mx-1"></i> 
                     Marco Admin
                 </router-link>
-                <router-link v-if="usertype.includes('admin')" :to="{ name: 'Collaborators' }" class="nav-link px-4" :class="'Collaborators' === $route.name ? 'active': ''">
-                    <i class="fas fa-users mx-1"></i>
-                    Colaboradores
-                </router-link>
+                <template  v-if="usertype.includes('admin')">
+                    <router-link :to="{ name: 'Collaborators' }" class="nav-link px-4" :class="'Collaborators' === $route.name ? 'active': ''">
+                        <i class="fas fa-users mx-1"></i>
+                        Colaboradores
+                    </router-link>
+                </template>
                 <router-link :to="{ name: 'Guides' }" class="nav-link px-4" :class="'Guides' === $route.name ? 'active': ''">
                     <i class="fas fa-info-circle"></i>
                     Guías
@@ -45,7 +47,7 @@ export default {
     data(){
         return{
             token: '',
-            usertype: "",
+            usertype: [],
             navOpen: false
         }
     },

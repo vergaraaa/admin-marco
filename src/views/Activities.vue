@@ -3,14 +3,15 @@
         <template v-if="dataLoaded">
             <template v-if="activities.length">
                 <div class="row">
+                    <h1 class="text-center mb-5">Actividades {{month}}</h1>
                     <div class="col-md-3" v-for="activity in activities" :key="activity._id">
                         <router-link :to="{ name: 'ActivityDetail', params: { id: activity._id }}" class="text-decoration-none text-black">
                             <div class="card mb-5" style="height: 28rem">
                                 <img :src="activity.image" style="height: 20rem;" class="card-img-top">
+                                <div class="top-right">{{new Date(activity.startDate).getUTCDate({day: "2-digit"})}}</div>
                                 <div class="card-body text-center">
                                     <h5 class="card-title">{{activity.name}}</h5>
                                     <p class="card-text">{{activity.author}}</p>
-                                    <p class="card-text"><small class="text-muted">{{new Date(activity.startDate).toISOString().substr(0, 10)}}</small></p>
                                 </div>
                             </div>
                         </router-link>
@@ -60,7 +61,9 @@ export default {
     data() {
         return { 
             activities: [],
-            dataLoaded: false
+            dataLoaded: false,
+            month: '',
+            nextMonth: ''
         }
     },
     methods:{
@@ -79,6 +82,7 @@ export default {
     },
     created() {
         this.getActivities();
+        this.month = new Date().toLocaleDateString('es-ES', {month: "long"});
     }
 }
 </script>
@@ -91,5 +95,15 @@ body{
     width: 50px; 
     height: 50px;
     /* color: #ec179b; */
+}
+
+.top-right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    background-color: #ec179b;
+    color: white;
+    padding: 5%;
+    font-size: 1.5rem;
 }
 </style>
