@@ -1,8 +1,8 @@
 <template>
     <div class="container mt-5">
-        <button :class="[isActive ? 'btn btn-success' : 'btn btn-primary']" color="[isActive ? 'green' : 'blue']" @click="toggle">
+        <!-- <button :class="[isActive ? 'btn btn-success' : 'btn btn-primary']" color="[isActive ? 'green' : 'blue']" @click="toggle">
             {{isActive ? 'Es puto' : 'Edgar'}}
-        </button>
+        </button> -->
         <div class="row">
             <div class="col-md-5 mb-5">
                 <div class="row px-4 pb-4 bg-marco">
