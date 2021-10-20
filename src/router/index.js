@@ -4,6 +4,9 @@ import Collaborators from '../views/Collaborators.vue'
 import Login from '../views/Login.vue'
 import Expos from '../views/Expos.vue'
 import ExpoDetail from '../views/ExpoDetail.vue'
+import Guides from '../views/Guides.vue'
+import Activities from '../views/Activities.vue'
+import ActivityDetail from '../views/ActivitiesDetail.vue'
 
 const routes = [
     {
@@ -16,6 +19,31 @@ const routes = [
         path: '/collaborators',
         name: 'Collaborators',
         component: Collaborators,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+    {
+        path: '/guides',
+        name: 'Guides',
+        component: Guides,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/activities',
+        name: 'Activities',
+        component: Activities,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/activities/create',
+        name: 'ActivityCreate',
+        component: ActivityDetail,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/activities/:id',
+        name: 'ActivityDetail',
+        component: ActivityDetail,
+        props: true,
         meta: { requiresAuth: true }
     },
     {
@@ -26,7 +54,7 @@ const routes = [
     },
     {
         path: '/expos/create',
-        name: 'ExposCreate',
+        name: 'ExpoCreate',
         component: ExpoDetail,
         props: true,
         meta: { requiresAuth: true },
@@ -53,9 +81,11 @@ const router = createRouter({
 
 router.beforeEach(async function(to, _, next){
     const token = localStorage.getItem("token");
+    const usertype = localStorage.getItem("usertype");
+
     if (to.meta.requiresAuth && !token) { // Si no esta autenticado
         next({ name: 'Login' });
-    } else if (to.meta.requiresUnauth && token) { // Si esta atenticado y quiere acceder al login
+    } else if (to.meta.requiresUnauth && token || to.meta.requiresAdmin && !usertype.includes("admin")) { // Si esta atenticado y quiere acceder al login
         next({ name: 'Home' });
     } else {
         next();

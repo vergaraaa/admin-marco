@@ -7,21 +7,29 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <div class="navbar-nav">
-                <router-link :to="{ name: 'Home' }" class="nav-link px-3" :class="'Home' === $route.name ? 'active': ''">
+                <router-link :to="{ name: 'Home' }" class="nav-link px-4" :class="'Home' === $route.name ? 'active': ''">
                     <i class="fas fa-user-shield mx-1"></i> 
                     Marco Admin
                 </router-link>
-                <router-link :to="{ name: 'Collaborators' }" class="nav-link px-3" :class="'Collaborators' === $route.name ? 'active': ''">
+                <router-link v-if="usertype.includes('admin')" :to="{ name: 'Collaborators' }" class="nav-link px-4" :class="'Collaborators' === $route.name ? 'active': ''">
                     <i class="fas fa-users mx-1"></i>
                     Colaboradores
                 </router-link>
-                <router-link :to="{ name: 'Expos' }" class="nav-link px-3" :class="'Expos' === $route.name ? 'active': ''">
+                <router-link :to="{ name: 'Guides' }" class="nav-link px-4" :class="'Guides' === $route.name ? 'active': ''">
+                    <i class="fas fa-info-circle"></i>
+                    Guías
+                </router-link>
+                <router-link :to="{ name: 'Activities' }" class="nav-link px-4" :class="'Activities' === $route.name ? 'active': ''">
+                    <i class="far fa-newspaper"></i>
+                    Actividades
+                </router-link>
+                <router-link :to="{ name: 'Expos' }" class="nav-link px-4" :class="'Expos' === $route.name ? 'active': ''">
                     <i class="far fa-images mx-1"></i>
                     Exposiciones
                 </router-link>
             </div>
             <div class="navbar-nav ms-auto">
-                <router-link :to="{ name: 'Login' }" class="nav-link px-3" @click="handleLogout">
+                <router-link :to="{ name: 'Login' }" class="nav-link px-4" @click="handleLogout">
                     <i class="fas fa-sign-out-alt mx-1"></i>
                     Logout
                 </router-link>
@@ -37,11 +45,13 @@ export default {
     data(){
         return{
             token: '',
+            usertype: "",
             navOpen: false
         }
     },
     created(){
         this.token = localStorage.getItem('token');
+        this.usertype = localStorage.getItem('usertype');
     },
     methods: {
         handleLogout(){

@@ -21,5 +21,8 @@ export default {
 
 
 <style>
-
+.form-control:active, .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(236, 23, 155, 0.5) !important;
+    border-color: #ec179b;
+}
 </style>

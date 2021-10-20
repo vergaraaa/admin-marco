@@ -1,20 +1,20 @@
 
 <template>
-    <div class="container">
-        <h3>Bienvenido como te llames</h3>
-        <h1 class="font-weight-bold">#MuseoDeTodos</h1>
+    <div class="container mt-5">
+        <h1>Hola {{name}}, ¿qué hacemos hoy?</h1>
+        <h5 class="font-weight-bold">#MuseoDeTodos</h5>
         <div class="row">
-            <div class="col-5">
+            <div class="col-md-5">
                 <img src="fondo_marco.jpg" class="img-fluid p-3">
                 <div class="d-grid gap-4">
                     <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'Collaborators' }" role="button" >Administrar colaboradores</router-link>
                     <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'Expos' }" role="button">Administrar exposiciones</router-link>
                 </div>
             </div>
-            <div class="col-7">
-                <h2 class="text-center">Exposiciones del mes</h2>
+            <div class="col-md-7">
+                <h2 class="text-center">Actividades del Mes</h2>
                 <div class="row px-4 pb-4 bg-marco">
-                        <h3 class="text-center" style="color: white;"> MES </h3>
+                        <h3 class="text-center" style="color: white;"> {{month}} </h3>
                         <div class="col align-self-center" style="background: white;">
                             <h5 class="text-center"> expo numero xD</h5>
                             <h5 class="text-center"> expo numero xD</h5>
@@ -33,8 +33,31 @@
 </template>
 
 <script>
+
 export default {
-    name: 'Home'  
+    name: 'Home',
+    data() {
+        return {
+            id: '',
+            name: '',
+            activities: [],
+            month: '',
+            dataLoaded: false
+        }
+    },
+    created() {
+        this.getUserName();
+        this.month = new Date().toLocaleDateString('es-ES', {month: "long"}).toUpperCase();
+    },
+    methods: {
+        async getUserName(){
+            this.id = localStorage.getItem("id");
+            const res = await fetch("http://100.24.228.237:10021/api/users/name/" + this.id);
+            const data = await res.json();
+            this.name = data.name;
+            this.dataLoaded = true;
+        }
+    }
 }
 </script>
 
