@@ -8,35 +8,35 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <div class="navbar-nav">
                 <router-link :to="{ name: 'Home' }" class="nav-link px-4" :class="'Home' === $route.name ? 'active': ''">
-                    <i class="fas fa-user-shield mx-1"></i> 
+                    <i class="fas fa-user-shield mr-1"></i> 
                     Marco Admin
                 </router-link>
                 <template  v-if="usertype.includes('admin')">
                     <router-link :to="{ name: 'Collaborators' }" class="nav-link px-4" :class="'Collaborators' === $route.name ? 'active': ''">
-                        <i class="fas fa-users mx-1"></i>
+                        <i class="fas fa-users mr-1"></i>
                         Colaboradores
                     </router-link>
                 </template>
                 <router-link :to="{ name: 'Guides' }" class="nav-link px-4" :class="'Guides' === $route.name ? 'active': ''">
-                    <i class="fas fa-info-circle"></i>
+                    <i class="fas fa-info-circle mr-1"></i>
                     Guías
                 </router-link>
+                <router-link :to="{ name: 'Reservations' }" class="nav-link px-4" :class="'Reservations' === $route.name ? 'active': ''">
+                    <i class="fas fa-calendar-week mx'1"></i>
+                    Reservaciones
+                </router-link>
                 <router-link :to="{ name: 'Activities' }" class="nav-link px-4" :class="'Activities' === $route.name ? 'active': ''">
-                    <i class="far fa-newspaper"></i>
+                    <i class="far fa-newspaper mr-1"></i>
                     Actividades
                 </router-link>
                 <router-link :to="{ name: 'Expos' }" class="nav-link px-4" :class="'Expos' === $route.name ? 'active': ''">
-                    <i class="far fa-images mx-1"></i>
+                    <i class="far fa-images mr-1"></i>
                     Exposiciones
-                </router-link>
-                <router-link :to="{ name: 'Expos' }" class="nav-link px-4" :class="'Expos' === $route.name ? 'active': ''">
-                    <i class="far fa-images mx-1"></i>
-                    Reservaciones
                 </router-link>
             </div>
             <div class="navbar-nav ms-auto">
                 <router-link :to="{ name: 'Login' }" class="nav-link px-4" @click="handleLogout">
-                    <i class="fas fa-sign-out-alt mx-1"></i>
+                    <i class="fas fa-sign-out-alt mr-1"></i>
                     Logout
                 </router-link>
             </div>

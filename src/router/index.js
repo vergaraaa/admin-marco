@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Expos from '../views/Expos.vue'
 import ExpoDetail from '../views/ExpoDetail.vue'
 import Guides from '../views/Guides.vue'
+import Reservations from '../views/Reservations.vue'
 import Activities from '../views/Activities.vue'
 import ActivityDetail from '../views/ActivitiesDetail.vue'
 
@@ -25,6 +26,12 @@ const routes = [
         path: '/guides',
         name: 'Guides',
         component: Guides,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/reservations',
+        name: 'Reservations',
+        component: Reservations,
         meta: { requiresAuth: true }
     },
     {
