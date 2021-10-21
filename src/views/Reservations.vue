@@ -15,7 +15,7 @@
                                 <th>Acciones</th>
                             </thead>
                             <tbody>
-                                <tr v-for="reservation in reservations" :key="reservation._id">
+                                <tr v-for="(reservation, index) in reservations" :key="reservation._id">
                                     <td>{{reservation.date}}</td>
                                     <td>{{reservation.hour}}</td>
                                     <td>{{reservation.guide.name}}</td>
@@ -24,7 +24,7 @@
                                     <td>{{reservation.spots}}</td>
                                     <td>
                                         <template v-if="reservation.available">
-                                            <button class="btn btn-danger"
+                                            <button class="btn btn-danger" @click="handleClickDeleteReservation(reservation._id, index)"
                                             data-dismiss="modalDeleteReservation" data-bs-toggle="modal" data-bs-target="#modalDeleteReservation">
                                                 Eliminar
                                             </button>
@@ -39,7 +39,7 @@
                 <form @submit.prevent="handleUploadReservation">
                     <div class="row">
                         <div class="col-md-3">
-                            <input class="form-control" type="date" v-model="reservation.date">
+                            <input type="date" class="form-control" name="date" id="date" :min="minDate" v-model="reservation.date">
                         </div>
                         <div class="col-md-3">
                             <select class="form-control" name="hour" id="hour" v-model="reservation.hour">
@@ -57,13 +57,22 @@
                     </div>
                 </form>
             </template>
+            <template>
+                <div class="row">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </template>
         </div>
         <!-- MODAL DELETE RESERVATION -->
         <div class="modal fade" id="modalDeleteReservation" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalCenterTitle">¿Estás seguro de que quieres esta reservación?</h6>
+                        <h6 class="modal-title" id="exampleModalCenterTitle">¿Estás seguro la reservación del día {{tempDate}} a las {{tempHour}}?</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -71,7 +80,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="handleDeleteGuide(guide._id)">Delete</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="handleDeleteReservation()">Delete</button>
                     </div>
                 </div>
             </div>
@@ -101,7 +110,6 @@ export default {
     data(){
         return{
             guide: new Guide(),
-            guideSelected: new Guide(),
             guides: [],
             reservation: new Reservation(),
             reservations: [],
@@ -110,17 +118,31 @@ export default {
             guidesLoaded: false,
             reservationsLoaded: false,
             id: '',
-            tempName:'',
-            tempLastname: '',
-            tempDate: '',
+            tempDate: new Date(),
             tempHour: '',
             reservationName: '',
-            hours: ["10:00 - 11:30", "11:30 - 13:00", "13:00 - 14:30", "14:30 - 16:00", "16:00 - 17:30"]
+            hours: ["10:00 - 11:30", "11:30 - 13:00", "13:00 - 14:30", "14:30 - 16:00", "16:00 - 17:30"],
+            minDate: new Date().setHours(0, 0, 0, 0)
         };
     },
     created(){
         this.getGuides();
         this.getReservations();
+        let today = new Date(),
+            day = today.getDate() + 1,
+            month = today.getMonth()+1, //January is 0
+            year = today.getFullYear();
+        if(day >= new Date(year, month-1, 0).getDate()){
+            day = 1;
+            month++;
+        }
+        if(day < 10){
+            day = '0' + day;
+        } 
+        if(month < 10){
+            month = '0' + month;
+        }
+        this.minDate = year + '-' + month + '-' + day;
     },
     methods:{
         async getGuides() {
@@ -135,27 +157,6 @@ export default {
             this.reservations = data;
             console.log(this.reservations);
             this.reservationsLoaded = true;
-        },
-        async handleUploadGuide(){
-            if(this.isEditing){
-                const requestOptions = {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(this.guide)
-                }
-                await fetch("http://100.24.228.237:10021/api/guides/" + this.id, requestOptions);/////////////////////////////////////////////
-            }
-            else{
-                const requestOptions = {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(this.guide)
-                }
-                await fetch("http://100.24.228.237:10021/api/guides/", requestOptions); ////////////////////////////
-            }
-            this.getGuides();
-            this.isEditing = false;
-            this.guide = new Guide();
         },
         async handleUploadReservation(){
             if(this.isEditing){
@@ -180,17 +181,6 @@ export default {
             this.isEditing = false;
             this.reservation = new Reservation();
         },
-        async handleClickEditGuide(id){
-            this.id = id;
-            this.isEditing = true;
-            const res = await fetch("http://100.24.228.237:10021/api/guides/" + id);//////////////////////
-            const data = await res.json();
-            this.guide = new Guide(
-                data.name,
-                data.lastname,
-                data.email
-            );
-        },
         async handleClickEditReservation(id){
             this.id = id;
             this.isEditing = true;
@@ -205,24 +195,10 @@ export default {
                 data.available
             );
         },
-        handleClickDeleteGuide(id, index){
-            this.id = id;
-            this.tempName = this.guides[index].name;
-            this.tempLastname = this.guides[index].lastname;
-        },
         handleClickDeleteReservation(id, index){
             this.id = id;
             this.tempDate = this.reservations[index].date;
             this.tempHour = this.reservations[index].hour;
-        },
-        async handleDeleteGuide(){
-            const requestOptions = {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-            }
-            await fetch('http://100.24.228.237:10021/api/guides/' + this.id, requestOptions);
-            this.getGuides();
-            this.guide = new Guide();
         },
         async handleDeleteReservation(){
             const requestOptions = {
