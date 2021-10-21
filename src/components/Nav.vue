@@ -29,6 +29,10 @@
                     <i class="far fa-images mx-1"></i>
                     Exposiciones
                 </router-link>
+                <router-link :to="{ name: 'Expos' }" class="nav-link px-4" :class="'Expos' === $route.name ? 'active': ''">
+                    <i class="far fa-images mx-1"></i>
+                    Reservaciones
+                </router-link>
             </div>
             <div class="navbar-nav ms-auto">
                 <router-link :to="{ name: 'Login' }" class="nav-link px-4" @click="handleLogout">

@@ -19,8 +19,8 @@
                             <div class="col align-self-center" style="background: white;">
                                 <table class="table table-bordered">
                                     <tr v-for="activity in activities" :key="activity._id">
-                                        <td>{{ activity.name }}</td>
-                                        <td>{{ new Date(activity.startDate).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric'}) }}</td>
+                                        <td class="p-2" style="width: 75%">{{ activity.name }}</td>
+                                        <td class="p-2" style="width: 25%">{{ new Date(activity.startDate).toLocaleDateString('es-ES', { month: 'long', day: 'numeric'}) }}</td>
                                     </tr>
                                 </table>
                             </div>

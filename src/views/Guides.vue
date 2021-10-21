@@ -1,24 +1,26 @@
 <template>
-     <div class="container mt-5">
-        <div class="row">
+    <div class="container mt-5">
+        <div class="row mb-5" style="height: 27rem">
             <div class="col-md-5 mb-5">
                 <div class="row px-4 pb-4 bg-marco">
-                    <h3 class="text-center p-3" style="color: white;"> Guias activos </h3>
-                    <div class="col align-self-center overflow-auto" style="background: white;">
-                        <template v-if="dataLoaded">
+                    <h3 class="text-center p-3" style="color: white;"> Guías activos </h3>
+                    <div class="col align-self-center" style="background: white;">
+                        <template v-if="guidesLoaded && reservationsLoaded">
                             <template v-if="guides.length">
-                                <table class="table">
-                                    <tbody>
-                                        <tr v-for="(guide, index) in guides" :key="index">
-                                            <td style="width: 75%">{{guide.name}} {{guide.lastname}}</td>
-                                            <td style="width: 25%" class="text-center">
-                                                <i class="fas fa-edit px-2 text-primary" style="cursor: pointer;"  @click="handleClickEditGuide(guide._id)"></i>
-                                                <i class="fas fa-trash-alt px-2 text-danger" style="cursor: pointer;" @click="handleClickDeleteGuide(guide._id, index)"
-                                                    data-dismiss="modalDelete" data-bs-toggle="modal" data-bs-target="#modalDelete"></i>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="row overflow-auto">
+                                    <table class="table table-bordered table-wrapper">
+                                        <tbody>
+                                            <tr v-for="(guide, index) in guides" :key="index">
+                                                <td style="width: 80%;">{{guide.name}} {{guide.lastname}}</td>
+                                                <td style="width: 30%;">
+                                                    <i class="fas fa-edit px-2 text-primary" style="cursor: pointer;"  @click="handleClickEditGuide(guide._id)"></i>
+                                                    <i class="fas fa-trash-alt px-2 text-danger" style="cursor: pointer;" @click="handleClickDeleteGuide(guide._id, index)"
+                                                        data-dismiss="modalDeleteGuide" data-bs-toggle="modal" data-bs-target="#modalDeleteGuide"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody> 
+                                    </table>
+                                </div>
                             </template>
                             <template v-else>
                                 <div class="row p-3">
@@ -80,13 +82,89 @@
                 </div>
             </div>
         </div> 
+        <div class="row">
+            <template v-if="guidesLoaded && reservationsLoaded">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Guía</th>
+                                <th>Disponible</th>
+                                <th>Usuario</th>
+                                <th>Lugares</th>
+                                <th>Acciones</th>
+                            </thead>
+                            <tbody>
+                                <tr v-for="reservation in reservations" :key="reservation._id">
+                                    <td>{{reservation.date}}</td>
+                                    <td>{{reservation.hour}}</td>
+                                    <td>{{reservation.guide.name}}</td>
+                                    <td>{{reservation.available}}</td>
+                                    <td>{{reservation.user}}</td>
+                                    <td>{{reservation.spots}}</td>
+                                    <td>
+                                        <template v-if="reservation.available">
+                                            <button class="btn btn-danger"
+                                            data-dismiss="modalDeleteReservation" data-bs-toggle="modal" data-bs-target="#modalDeleteReservation">
+                                                Eliminar
+                                            </button>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+                <form @submit.prevent="handleUploadReservation">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input class="form-control" type="date" v-model="reservation.date">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" name="hour" id="hour" v-model="reservation.hour">
+                                <option v-for="(hour, index) in hours" :key="index" >{{hour}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" name="guide" id="guide" v-model="reservation.guide">
+                                <option v-for="(guide, index) in guides" :key="index" :value="guide">{{guide.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>  
+                    </div>
+                </form>
+            </template>
+        </div>
 
-        <!-- MODAL -->
-        <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+        <!-- MODAL DELETE GUIDE -->
+        <div class="modal fade" id="modalDeleteGuide" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="exampleModalCenterTitle">¿Estás seguro de que quieres eliminar a {{tempName}} {{tempLastname}}?</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Esta acción será permanente y no podrá revertirse.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="handleDeleteGuide(guide._id)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- MODAL DELETE RESERVATION -->
+        <div class="modal fade" id="modalDeleteReservation" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="exampleModalCenterTitle">¿Estás seguro de que quieres esta reservación?</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -125,17 +203,21 @@ export default {
     data(){
         return{
             guide: new Guide(),
+            guideSelected: new Guide(),
             guides: [],
             reservation: new Reservation(),
             reservations: [],
             isActive: false,
             isEditing: false,
-            dataLoaded: false,
+            guidesLoaded: false,
+            reservationsLoaded: false,
             id: '',
             tempName:'',
             tempLastname: '',
             tempDate: '',
-            tempHour: ''
+            tempHour: '',
+            reservationName: '',
+            hours: ["10:00 - 11:30", "11:30 - 13:00", "13:00 - 14:30", "14:30 - 16:00", "16:00 - 17:30"]
         };
     },
     created(){
@@ -147,13 +229,14 @@ export default {
             const response = await fetch("http://100.24.228.237:10021/api/guides/");///////////////////////////////
             const data = await response.json();
             this.guides = data;
-            this.dataLoaded = true;
+            this.guidesLoaded = true;
         },
         async getReservations() {
             const response = await fetch("http://100.24.228.237:10021/api/reservations/");///////////////////////////////
             const data = await response.json();
             this.reservations = data;
-            this.dataLoaded = true;
+            console.log(this.reservations);
+            this.reservationsLoaded = true;
         },
         async handleUploadGuide(){
             if(this.isEditing){
@@ -189,9 +272,11 @@ export default {
                 const requestOptions = {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(this.reservations)
+                    body: JSON.stringify(this.reservation)
                 }
-                await fetch("http://100.24.228.237:10021/api/reservations/", requestOptions); ////////////////////////////
+                const res = await fetch("http://100.24.228.237:10021/api/reservations/", requestOptions); ////////////////////////////
+                const data = await res.json();
+                console.log(data);
             }
             this.getReservations();
             this.isEditing = false;
@@ -266,3 +351,13 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+
+.table-wrapper {
+    max-height: 20rem;
+    overflow: auto;
+    display:inline-block;
+}
+
+</style>
