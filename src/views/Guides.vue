@@ -5,7 +5,7 @@
                 <div class="row px-4 pb-4 bg-marco">
                     <h3 class="text-center p-3" style="color: white;"> Guías activos </h3>
                     <div class="col align-self-center" style="background: white;">
-                        <template v-if="guidesLoaded && reservationsLoaded">
+                        <template v-if="guidesLoaded">
                             <template v-if="guides.length">
                                 <div class="row overflow-auto">
                                     <table class="table table-bordered table-wrapper">
@@ -132,40 +132,23 @@ class Guide {
         this.email = email;
     }    
 }
-class Reservation {
-    constructor(date,hour,guide,user,spots,available){
-        this.date = date;
-        this.hour = hour;
-        this.guide = guide;
-        this.user = user;
-        this.spots = spots;
-        this.available = available;
-    }
-}
 export default {
     data(){
         return{
             guide: new Guide(),
             guideSelected: new Guide(),
             guides: [],
-            reservation: new Reservation(),
-            reservations: [],
             isActive: false,
             isEditing: false,
             guidesLoaded: false,
-            reservationsLoaded: false,
             id: '',
             tempName:'',
             tempLastname: '',
-            tempDate: '',
-            tempHour: '',
-            reservationName: '',
             hours: ["10:00 - 11:30", "11:30 - 13:00", "13:00 - 14:30", "14:30 - 16:00", "16:00 - 17:30"]
         };
     },
     created(){
         this.getGuides();
-        this.getReservations();
     },
     methods:{
         async getGuides() {
@@ -173,13 +156,6 @@ export default {
             const data = await response.json();
             this.guides = data;
             this.guidesLoaded = true;
-        },
-        async getReservations() {
-            const response = await fetch("http://100.24.228.237:10021/api/reservations/");///////////////////////////////
-            const data = await response.json();
-            this.reservations = data;
-            console.log(this.reservations);
-            this.reservationsLoaded = true;
         },
         async handleUploadGuide(){
             if(this.isEditing){
@@ -202,29 +178,6 @@ export default {
             this.isEditing = false;
             this.guide = new Guide();
         },
-        async handleUploadReservation(){
-            if(this.isEditing){
-                const requestOptions = {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(this.reservation)
-                }
-                await fetch("http://100.24.228.237:10021/api/reservations/" + this.id, requestOptions);/////////////////////////////////////////////
-            }
-            else{
-                const requestOptions = {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(this.reservation)
-                }
-                const res = await fetch("http://100.24.228.237:10021/api/reservations/", requestOptions); ////////////////////////////
-                const data = await res.json();
-                console.log(data);
-            }
-            this.getReservations();
-            this.isEditing = false;
-            this.reservation = new Reservation();
-        },
         async handleClickEditGuide(id){
             this.id = id;
             this.isEditing = true;
@@ -236,29 +189,10 @@ export default {
                 data.email
             );
         },
-        async handleClickEditReservation(id){
-            this.id = id;
-            this.isEditing = true;
-            const res = await fetch("http://100.24.228.237:10021/api/reservations/" + id);//////////////////////
-            const data = await res.json();
-            this.reservation = new Reservation(
-                data.date,
-                data.hour,
-                data.guide,
-                data.user,
-                data.spots,
-                data.available
-            );
-        },
         handleClickDeleteGuide(id, index){
             this.id = id;
             this.tempName = this.guides[index].name;
             this.tempLastname = this.guides[index].lastname;
-        },
-        handleClickDeleteReservation(id, index){
-            this.id = id;
-            this.tempDate = this.reservations[index].date;
-            this.tempHour = this.reservations[index].hour;
         },
         async handleDeleteGuide(){
             const requestOptions = {
@@ -269,24 +203,10 @@ export default {
             this.getGuides();
             this.guide = new Guide();
         },
-        async handleDeleteReservation(){
-            const requestOptions = {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-            }
-            await fetch('http://100.24.228.237:10021/api/reservations/' + this.id, requestOptions);
-            this.getReservations();
-            this.reservation = new Reservation();
-        },
         handleClickToggleGuide(){
             this.id = "";
             this.isEditing = false;
             this.guide = new Guide();
-        },
-        handleClickToggleReservation(){
-            this.id = "";
-            this.isEditing = false;
-            this.reservation = new Reservation();
         },
         toggle() {
             this.isActive = !this.isActive;

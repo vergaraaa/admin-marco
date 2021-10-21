@@ -15,7 +15,7 @@
                                 <th>Acciones</th>
                             </thead>
                             <tbody>
-                                <tr v-for="reservation in reservations" :key="reservation._id">
+                                <tr v-for="(reservation,index) in reservations" :key="reservation._id">
                                     <td>{{reservation.date}}</td>
                                     <td>{{reservation.hour}}</td>
                                     <td>{{reservation.guide.name}}</td>
@@ -24,9 +24,15 @@
                                     <td>{{reservation.spots}}</td>
                                     <td>
                                         <template v-if="reservation.available">
-                                            <button class="btn btn-danger"
+                                            <button class="btn btn-danger" @click="handleClickDeleteReservation(reservation._id, index)"
                                             data-dismiss="modalDeleteReservation" data-bs-toggle="modal" data-bs-target="#modalDeleteReservation">
                                                 Eliminar
+                                            </button>
+                                            <button v-if="!isEditing" type="button" class="btn btn-primary" @click="handleClickEditReservation(reservation._id)" >
+                                                Editar
+                                            </button>
+                                            <button v-else type="button" class="btn btn-primary" disabled=true>
+                                                Editar
                                             </button>
                                         </template>
                                     </td>
@@ -39,20 +45,31 @@
                 <form @submit.prevent="handleUploadReservation">
                     <div class="row">
                         <div class="col-md-3">
+                            <label for="date" class="form-label">Fecha:</label>
                             <input class="form-control" type="date" v-model="reservation.date">
                         </div>
                         <div class="col-md-3">
+                            <label for="hour" class="form-label">Hora:</label>
                             <select class="form-control" name="hour" id="hour" v-model="reservation.hour">
                                 <option v-for="(hour, index) in hours" :key="index" >{{hour}}</option>
                             </select>
                         </div>
                         <div class="col-md-3">
+                            <label for="guide" class="form-label">Guia:</label>
                             <select class="form-control" name="guide" id="guide" v-model="reservation.guide">
-                                <option v-for="(guide, index) in guides" :key="index" :value="guide">{{guide.name}}</option>
+                                <option v-for="(guide, index) in guides" :key="index" :value="guide" :selected="guide == reservation.guide">{{guide.name}}</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        <div class="col-md-3 align-self-end">
+                            <button v-if="isEditing" type="submit" class="btn btn-success px-5">
+                                Guardar 
+                            </button>
+                            <button v-else type="submit" class="btn btn-success px-5">
+                                Crear
+                            </button>
+                            <button  type="button" class="btn btn-danger" @click="handleClickToggleReservation">
+                                Cancelar
+                            </button>
                         </div>  
                     </div>
                 </form>
@@ -71,7 +88,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="handleDeleteGuide(guide._id)">Delete</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="handleDeleteReservation">Delete</button>
                     </div>
                 </div>
             </div>
@@ -110,8 +127,6 @@ export default {
             guidesLoaded: false,
             reservationsLoaded: false,
             id: '',
-            tempName:'',
-            tempLastname: '',
             tempDate: '',
             tempHour: '',
             reservationName: '',
@@ -124,38 +139,16 @@ export default {
     },
     methods:{
         async getGuides() {
-            const response = await fetch("http://100.24.228.237:10021/api/guides/");///////////////////////////////
+            const response = await fetch("http://100.24.228.237:10021/api/guides/");
             const data = await response.json();
             this.guides = data;
             this.guidesLoaded = true;
         },
         async getReservations() {
-            const response = await fetch("http://100.24.228.237:10021/api/reservations/");///////////////////////////////
+            const response = await fetch("http://100.24.228.237:10021/api/reservations/");
             const data = await response.json();
             this.reservations = data;
-            console.log(this.reservations);
             this.reservationsLoaded = true;
-        },
-        async handleUploadGuide(){
-            if(this.isEditing){
-                const requestOptions = {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(this.guide)
-                }
-                await fetch("http://100.24.228.237:10021/api/guides/" + this.id, requestOptions);/////////////////////////////////////////////
-            }
-            else{
-                const requestOptions = {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(this.guide)
-                }
-                await fetch("http://100.24.228.237:10021/api/guides/", requestOptions); ////////////////////////////
-            }
-            this.getGuides();
-            this.isEditing = false;
-            this.guide = new Guide();
         },
         async handleUploadReservation(){
             if(this.isEditing){
@@ -164,7 +157,7 @@ export default {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.reservation)
                 }
-                await fetch("http://100.24.228.237:10021/api/reservations/" + this.id, requestOptions);/////////////////////////////////////////////
+                await fetch("http://100.24.228.237:10021/api/reservations/" + this.id, requestOptions);
             }
             else{
                 const requestOptions = {
@@ -172,7 +165,7 @@ export default {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.reservation)
                 }
-                const res = await fetch("http://100.24.228.237:10021/api/reservations/", requestOptions); ////////////////////////////
+                const res = await fetch("http://100.24.228.237:10021/api/reservations/", requestOptions); 
                 const data = await res.json();
                 console.log(data);
             }
@@ -180,21 +173,10 @@ export default {
             this.isEditing = false;
             this.reservation = new Reservation();
         },
-        async handleClickEditGuide(id){
-            this.id = id;
-            this.isEditing = true;
-            const res = await fetch("http://100.24.228.237:10021/api/guides/" + id);//////////////////////
-            const data = await res.json();
-            this.guide = new Guide(
-                data.name,
-                data.lastname,
-                data.email
-            );
-        },
         async handleClickEditReservation(id){
             this.id = id;
             this.isEditing = true;
-            const res = await fetch("http://100.24.228.237:10021/api/reservations/" + id);//////////////////////
+            const res = await fetch("http://100.24.228.237:10021/api/reservations/" + id);
             const data = await res.json();
             this.reservation = new Reservation(
                 data.date,
@@ -204,25 +186,13 @@ export default {
                 data.spots,
                 data.available
             );
-        },
-        handleClickDeleteGuide(id, index){
-            this.id = id;
-            this.tempName = this.guides[index].name;
-            this.tempLastname = this.guides[index].lastname;
+            this.reservation.date = new Date(this.reservation.date).toISOString().substr(0, 10);            
+            console.log(this.reservation.guide.name);
         },
         handleClickDeleteReservation(id, index){
             this.id = id;
             this.tempDate = this.reservations[index].date;
             this.tempHour = this.reservations[index].hour;
-        },
-        async handleDeleteGuide(){
-            const requestOptions = {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-            }
-            await fetch('http://100.24.228.237:10021/api/guides/' + this.id, requestOptions);
-            this.getGuides();
-            this.guide = new Guide();
         },
         async handleDeleteReservation(){
             const requestOptions = {
@@ -232,11 +202,6 @@ export default {
             await fetch('http://100.24.228.237:10021/api/reservations/' + this.id, requestOptions);
             this.getReservations();
             this.reservation = new Reservation();
-        },
-        handleClickToggleGuide(){
-            this.id = "";
-            this.isEditing = false;
-            this.guide = new Guide();
         },
         handleClickToggleReservation(){
             this.id = "";
@@ -249,7 +214,3 @@ export default {
     }
 };
 </script>
-
-<style>
-
-</style>
