@@ -7,20 +7,18 @@
                     <div class="col align-self-center" style="background: white;">
                         <template v-if="guidesLoaded">
                             <template v-if="guides.length">
-                                <div class="row overflow-auto">
-                                    <table class="table table-bordered table-wrapper">
-                                        <tbody>
-                                            <tr v-for="(guide, index) in guides" :key="index">
-                                                <td style="width: 80%;">{{guide.name}} {{guide.lastname}}</td>
-                                                <td style="width: 30%;">
-                                                    <i class="fas fa-edit px-2 text-primary" style="cursor: pointer;"  @click="handleClickEditGuide(guide._id)"></i>
-                                                    <i class="fas fa-trash-alt px-2 text-danger" style="cursor: pointer;" @click="handleClickDeleteGuide(guide._id, index)"
-                                                        data-dismiss="modalDeleteGuide" data-bs-toggle="modal" data-bs-target="#modalDeleteGuide"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody> 
-                                    </table>
-                                </div>
+                                <table class="table">
+                                    <tbody>
+                                        <tr v-for="(guide, index) in guides" :key="index">
+                                            <td style="width: 75%">{{guide.name}} {{guide.lastname}}</td>
+                                            <td style="width: 25%" class="text-center">
+                                                <i class="fas fa-edit px-2 text-primary" style="cursor: pointer;" @click="handleClickEditGuide(guide._id)"></i>
+                                                <i class="fas fa-trash-alt px-2 text-danger" style="cursor: pointer;" @click="handleClickDeleteGuide(guide._id, index)"
+                                                    data-dismiss="modalDelete" data-bs-toggle="modal" data-bs-target="#modalDelete"></i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </template>
                             <template v-else>
                                 <div class="row p-3">
