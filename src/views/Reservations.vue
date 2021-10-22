@@ -4,26 +4,40 @@
             <template v-if="guidesLoaded && reservationsLoaded">
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <th>Fecha</th>
-                                <th>Hora</th>
-                                <th>Guía</th>
-                                <th>Disponible</th>
-                                <th>Usuario</th>
-                                <th>Lugares</th>
-                                <th>Acciones</th>
+                        <table class="table table-light table-striped table-bordered table-hover">  
+                            <thead class="table-light"> 
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Guía</th>
+                                    <th>Disponible</th>
+                                    <th>Usuario</th>
+                                    <th>Lugares</th>
+                                    <th>Acciones</th>
+
+                                </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="text-align: center;">
                                 <tr v-for="(reservation, index) in reservations" :key="reservation._id">
-                                    <td>{{reservation.date}}</td>
+                                    <td>{{new Date(reservation.date).toLocaleString('es-ES', { timeZone: 'UTC', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}}</td>
                                     <td>{{reservation.hour}}</td>
                                     <td>{{reservation.guide.name}}</td>
-                                    <td>{{reservation.available}}</td>
+                                    <td>
+                                        <i v-if="reservation.available" class="fas fa-check text-success"></i>
+                                        <i v-else class="fas fa-times text-danger"></i>
+                                        <!--Si se quiere desplegar true o false en vez de iconos
+                                        {{reservation.available}}--> 
+                                    </td>
                                     <td>{{reservation.user}}</td>
                                     <td>{{reservation.spots}}</td>
                                     <td>
                                         <template v-if="reservation.available">
+                                            <i v-if="!isEditing" class="fas fa-edit px-2 text-primary" style="cursor: pointer;"  @click="handleClickEditReservation(reservation._id)"></i>
+                                            <i v-else class="fas fa-edit px-2 text-#9E9E9E"> </i>
+                                            <i class="fas fa-trash-alt px-2 text-danger" style="cursor: pointer;" @click="handleClickDeleteReservation(reservation._id, index)"
+                                                data-dismiss="modalDeleteReservation" data-bs-toggle="modal" data-bs-target="#modalDeleteReservation">
+                                            </i>
+                                            <!-- En el caso de querer botones en vez de iconos
                                             <button class="btn btn-danger" @click="handleClickDeleteReservation(reservation._id, index)"
                                             data-dismiss="modalDeleteReservation" data-bs-toggle="modal" data-bs-target="#modalDeleteReservation">
                                                 Eliminar
@@ -33,7 +47,7 @@
                                             </button>
                                             <button v-else type="button" class="btn btn-primary" disabled=true>
                                                 Editar
-                                            </button>
+                                            </button>-->
                                         </template>
                                     </td>
                                 </tr>
@@ -50,27 +64,27 @@
                         </div>
                         <div class="col-md-3">
                             <label for="hour" class="form-label">Hora:</label>
-                            <select class="form-control" name="hour" id="hour" v-model="reservation.hour">
+                            <select class="form-select" name="hour" id="hour" v-model="reservation.hour">
                                 <option v-for="(hour, index) in hours" :key="index" >{{hour}}</option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="guide" class="form-label">Guia:</label>
-                            <select class="form-control" name="guide" id="guide" v-model="reservation.guide">
+                            <select class="form-select" name="guide" id="guide" v-model="reservation.guide">
                                 <option v-for="(guide, index) in guides" :key="index" :value="guide" :selected="guide == reservation.guide">{{guide.name}}</option>
                             </select>
                         </div>
                         <div class="col-md-3 align-self-end">
-                            <button v-if="isEditing" type="submit" class="btn btn-success px-5">
+                            <button v-if="isEditing" type="submit" class="btn btn-success mx-2 mt-1">
                                 Guardar 
                             </button>
-                            <button v-else type="submit" class="btn btn-success px-5">
+                            <button v-else type="submit" class="btn btn-success mx-2 mt-1">
                                 Crear
                             </button>
-                            <button  type="button" class="btn btn-danger" @click="handleClickToggleReservation">
+                            <button  type="button" class="btn btn-danger mt-1" @click="handleClickToggleReservation">
                                 Cancelar
                             </button>
-                        </div>  
+                        </div>
                     </div>
                 </form>
             </template>
