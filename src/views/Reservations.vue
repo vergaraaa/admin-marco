@@ -46,7 +46,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label for="date" class="form-label">Fecha:</label>
-                            <input class="form-control" type="date" v-model="reservation.date">
+                            <input class="form-control" type="date" v-model="reservation.date" :min="minDate">
                         </div>
                         <div class="col-md-3">
                             <label for="hour" class="form-label">Hora:</label>
