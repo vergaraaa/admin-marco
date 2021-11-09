@@ -11,7 +11,7 @@
                     <i class="fas fa-user-shield mr-1"></i> 
                     Marco Admin
                 </router-link>
-                <template  v-if="usertype.includes('admin')">
+                <template v-if="usertype.includes('admin')">
                     <router-link :to="{ name: 'Collaborators' }" class="nav-link px-4" :class="'Collaborators' === $route.name ? 'active': ''">
                         <i class="fas fa-users mr-1"></i>
                         Colaboradores
@@ -51,7 +51,7 @@ export default {
     data(){
         return{
             token: '',
-            usertype: [],
+            usertype: '',
             navOpen: false
         }
     },
@@ -62,6 +62,7 @@ export default {
     methods: {
         handleLogout(){
             localStorage.removeItem('token');
+            localStorage.removeItem('usertype');
             this.$router.go();
         },
         handleToggle(){

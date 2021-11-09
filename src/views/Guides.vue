@@ -14,7 +14,7 @@
                                             <td style="width: 25%" class="text-center">
                                                 <i class="fas fa-edit px-2 text-primary" style="cursor: pointer;" @click="handleClickEditGuide(guide._id)"></i>
                                                 <i class="fas fa-trash-alt px-2 text-danger" style="cursor: pointer;" @click="handleClickDeleteGuide(guide._id, index)"
-                                                    data-dismiss="modalDelete" data-bs-toggle="modal" data-bs-target="#modalDelete"></i>
+                                                    data-dismiss="modalDeleteguide" data-bs-toggle="modal" data-bs-target="#modalDeleteGuide"></i>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -101,7 +101,7 @@
             </div>
         </div>
         <!-- MODAL DELETE RESERVATION -->
-        <div class="modal fade" id="modalDeleteReservation" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+        <!-- <div class="modal fade" id="modalDeleteReservation" tabindex="-1" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -117,7 +117,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 

@@ -87,12 +87,24 @@ const router = createRouter({
 })
 
 router.beforeEach(async function(to, _, next){
-    const token = localStorage.getItem("token");
-    const usertype = localStorage.getItem("usertype");
+    let response = await fetch('http://100.24.228.237:10021/api/users/admin/validateToken/', {
+        method: "GET",
+        headers: {
+            auth_key: localStorage.getItem("token")
+        }
+    })
+    let token = await response.json();
+    let usertype = localStorage.getItem("usertype");
+
+    if(token.error){
+        localStorage.clear();
+        token = null;
+        usertype = ["empty"];
+    }
 
     if (to.meta.requiresAuth && !token) { // Si no esta autenticado
         next({ name: 'Login' });
-    } else if (to.meta.requiresUnauth && token || to.meta.requiresAdmin && !usertype.includes("admin")) { // Si esta atenticado y quiere acceder al login
+    } else if (to.meta.requiresUnauth && token || to.meta.requiresAdmin && !usertype.includes("admin")) { // Si esta autenticado y quiere acceder al login
         next({ name: 'Home' });
     } else {
         next();

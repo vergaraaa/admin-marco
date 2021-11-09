@@ -30,7 +30,7 @@
                 </div>
             </template>
             <template v-else>
-                <div class="row">
+                <div class="row mb-5">
                     <div class="col-md-4 mx-auto text-center">
                         <div class="card p-3">
                             <p class="h5 mb-3">Parece que no hay ninguna actividad...</p>
