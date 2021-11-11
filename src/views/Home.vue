@@ -8,8 +8,8 @@
                 <div class="col-md-5">
                     <img src="fondo_marco.jpg" class="img-fluid p-3">
                     <div class="d-grid gap-4">
-                        <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'Activities' }" role="button" >Administrar actividades</router-link>
-                        <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'Expos' }" role="button">Administrar exposiciones</router-link>
+                        <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'ActivityCreate' }" role="button" >Crear nueva actividad</router-link>
+                        <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'ExpoCreate' }" role="button">Crear nueva exposición</router-link>
                     </div>
                 </div>
                 <div class="col-md-7">
