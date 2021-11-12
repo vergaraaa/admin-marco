@@ -208,7 +208,10 @@ export default {
 
             const requestOptions = {
                 method: this.isNewActivity ? "POST" : "PUT",
-                body: formData
+                body: formData,
+                headers: {
+                    auth_key: localStorage.getItem("token")
+                }
             }
             if(this.isNewActivity){
                 await fetch("http://100.24.228.237:10021/api/activities/", requestOptions);

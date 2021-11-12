@@ -79,12 +79,12 @@ const routes = [
         component: Login,
         meta: { requiresUnauth: true }
     }
-]
+];
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
-})
+});
 
 router.beforeEach(async function(to, _, next){
     let response = await fetch('http://100.24.228.237:10021/api/users/admin/validateToken/', {
@@ -92,7 +92,7 @@ router.beforeEach(async function(to, _, next){
         headers: {
             auth_key: localStorage.getItem("token")
         }
-    })
+    });
     let token = await response.json();
     let usertype = localStorage.getItem("usertype");
 
