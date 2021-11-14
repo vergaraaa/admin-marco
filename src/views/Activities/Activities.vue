@@ -7,7 +7,7 @@
             <span @click="selectNext"><i style="cursor: pointer;" class="fas fa-chevron-circle-right"></i></span>
         </h1>
         <h6 class="text-center mb-4">
-            <span @click="selectToday" style="cursor: pointer;">Today</span>
+            <span @click="selectToday" style="cursor: pointer;">Ir a mes actual</span>
         </h6>
         
         <template v-if="activitiesLoaded">
@@ -115,9 +115,6 @@ export default {
     },
     created() {
         this.selectToday();
-        var today = new Date();
-        this.month = new Date(today).toLocaleDateString('es-ES', {month: "long"});
-        this.date = moment().format("MMMM YYYY");
     }
 }
 </script>
