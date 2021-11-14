@@ -7,32 +7,34 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <div class="navbar-nav">
-                <router-link :to="{ name: 'Home' }" class="nav-link px-4" :class="'Home' === $route.name ? 'active': ''">
-                    <i class="fas fa-user-shield mr-1"></i> 
-                    Marco Admin
-                </router-link>
-                <template v-if="usertype.includes('admin')">
-                    <router-link :to="{ name: 'Collaborators' }" class="nav-link px-4" :class="'Collaborators' === $route.name ? 'active': ''">
-                        <i class="fas fa-users mr-1"></i>
-                        Colaboradores
+                <template v-if="usertype.includes('admin') || usertype.includes('collaborator')">
+                    <router-link :to="{ name: 'Home' }" class="nav-link px-4" :class="'Home' === $route.name ? 'active': ''">
+                        <i class="fas fa-user-shield mr-1"></i> 
+                        Marco Admin
+                    </router-link>
+                    <template v-if="usertype.includes('admin')">
+                        <router-link :to="{ name: 'Collaborators' }" class="nav-link px-4" :class="'Collaborators' === $route.name ? 'active': ''">
+                            <i class="fas fa-users mr-1"></i>
+                            Colaboradores
+                        </router-link>
+                    </template>
+                    <router-link :to="{ name: 'Guides' }" class="nav-link px-4" :class="'Guides' === $route.name ? 'active': ''">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Guías
+                    </router-link>
+                    <router-link :to="{ name: 'Reservations' }" class="nav-link px-4" :class="'Reservations' === $route.name ? 'active': ''">
+                        <i class="fas fa-calendar-week mr-1"></i>
+                        Reservaciones
+                    </router-link>
+                    <router-link :to="{ name: 'Activities' }" class="nav-link px-4" :class="'Activities' === $route.name ? 'active': ''">
+                        <i class="far fa-newspaper mr-1"></i>
+                        Actividades
+                    </router-link>
+                    <router-link :to="{ name: 'Expos' }" class="nav-link px-4" :class="'Expos' === $route.name ? 'active': ''">
+                        <i class="far fa-images mr-1"></i>
+                        Exposiciones
                     </router-link>
                 </template>
-                <router-link :to="{ name: 'Guides' }" class="nav-link px-4" :class="'Guides' === $route.name ? 'active': ''">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    Guías
-                </router-link>
-                <router-link :to="{ name: 'Reservations' }" class="nav-link px-4" :class="'Reservations' === $route.name ? 'active': ''">
-                    <i class="fas fa-calendar-week mx'1"></i>
-                    Reservaciones
-                </router-link>
-                <router-link :to="{ name: 'Activities' }" class="nav-link px-4" :class="'Activities' === $route.name ? 'active': ''">
-                    <i class="far fa-newspaper mr-1"></i>
-                    Actividades
-                </router-link>
-                <router-link :to="{ name: 'Expos' }" class="nav-link px-4" :class="'Expos' === $route.name ? 'active': ''">
-                    <i class="far fa-images mr-1"></i>
-                    Exposiciones
-                </router-link>
             </div>
             <div class="navbar-nav ms-auto">
                 <router-link :to="{ name: 'Login' }" class="nav-link px-4" @click="handleLogout">
@@ -57,12 +59,11 @@ export default {
     },
     created(){
         this.token = localStorage.getItem('token');
-        this.usertype = localStorage.getItem('usertype');
+        this.usertype = localStorage.getItem('usertype') || ['empty'];
     },
     methods: {
         handleLogout(){
-            localStorage.removeItem('token');
-            localStorage.removeItem('usertype');
+            localStorage.clear();
             this.$router.go();
         },
         handleToggle(){

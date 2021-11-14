@@ -1,20 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Activities from '../views/Activities/Activities.vue'
+import ActivityDetail from '../views/Activities/ActivitiesDetail.vue'
+import ExpoDetail from '../views/Expos/ExpoDetail.vue'
+import Expos from '../views/Expos/Expos.vue'
+import Guide from '../views/Guides/Guide.vue'
+import Guides from '../views/Guides/Guides.vue'
 import Collaborators from '../views/Collaborators.vue'
+import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
-import Expos from '../views/Expos.vue'
-import ExpoDetail from '../views/ExpoDetail.vue'
-import Guides from '../views/Guides.vue'
 import Reservations from '../views/Reservations.vue'
-import Activities from '../views/Activities.vue'
-import ActivityDetail from '../views/ActivitiesDetail.vue'
 
 const routes = [
     {
         path: '/',
         name: 'Home',
         component: Home,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiresAdminCollab: true },
     },
     {
         path: '/collaborators',
@@ -26,58 +27,65 @@ const routes = [
         path: '/guides',
         name: 'Guides',
         component: Guides,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
         path: '/reservations',
         name: 'Reservations',
         component: Reservations,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
         path: '/activities',
         name: 'Activities',
         component: Activities,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
         path: '/activities/create',
         name: 'ActivityCreate',
         component: ActivityDetail,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
         path: '/activities/:id',
         name: 'ActivityDetail',
         component: ActivityDetail,
         props: true,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
         path: '/expos',
         name: 'Expos',
         component: Expos,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiresAdminCollab: true },
     },
     {
         path: '/expos/create',
         name: 'ExpoCreate',
         component: ExpoDetail,
         props: true,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiresAdminCollab: true },
     },
     {
         path: '/expos/:id',
         name: 'ExpoDetail',
         component: ExpoDetail,
         props: true,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
         path: '/login',
         name: 'Login',
         component: Login,
         meta: { requiresUnauth: true }
+    }
+    ,
+    {
+        path: '/myreservations',
+        name: 'GuideReservations',
+        component: Guide,
+        meta: { requiresAuth: true }
     }
 ];
 
@@ -104,9 +112,14 @@ router.beforeEach(async function(to, _, next){
 
     if (to.meta.requiresAuth && !token) { // Si no esta autenticado
         next({ name: 'Login' });
-    } else if (to.meta.requiresUnauth && token || to.meta.requiresAdmin && !usertype.includes("admin")) { // Si esta autenticado y quiere acceder al login
+    } 
+    else if (to.meta.requiresUnauth && token || to.meta.requiresAdmin && !usertype.includes("admin")) { // Si esta autenticado y quiere acceder al login
         next({ name: 'Home' });
-    } else {
+    } 
+    else if (to.meta.requiresAdminCollab && usertype.includes('guide')) {
+        next({ name: 'GuideReservations' });
+    } 
+    else {
         next();
     }
 })

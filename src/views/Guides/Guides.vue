@@ -53,11 +53,15 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="lastname" class="form-label">Apellido:</label>
-                                        <input type="text" class="form-control" id="name" v-model="guide.lastname" required>
+                                        <input type="text" class="form-control" id="lastname" v-model="guide.lastname" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Correo:</label>
                                         <input type="email" class="form-control" id="email" v-model="guide.email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password:</label>
+                                        <input type="password" class="form-control" id="password" v-model="guide.password" required>
                                     </div>
                                     <div class="mb-3">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
@@ -124,17 +128,18 @@
 
 <script>
 class Guide {
-    constructor(name, lastname, email){
+    constructor(name, lastname, email, password){
         this.name = name;
         this.lastname = lastname;
         this.email = email;
+        this.password = password;
+        this.usertype = ["guide"];
     }    
 }
 export default {
     data(){
         return{
             guide: new Guide(),
-            guideSelected: new Guide(),
             guides: [],
             isActive: false,
             isEditing: false,
@@ -162,7 +167,7 @@ export default {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.guide)
                 }
-                await fetch("http://100.24.228.237:10021/api/guides/" + this.id, requestOptions);/////////////////////////////////////////////
+                await fetch("http://100.24.228.237:10021/api/users/" + this.id, requestOptions);/////////////////////////////////////////////
             }
             else{
                 const requestOptions = {
@@ -170,7 +175,7 @@ export default {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.guide)
                 }
-                await fetch("http://100.24.228.237:10021/api/guides/", requestOptions); ////////////////////////////
+                await fetch("http://100.24.228.237:10021/api/users/", requestOptions); ////////////////////////////
             }
             this.getGuides();
             this.isEditing = false;
@@ -179,7 +184,7 @@ export default {
         async handleClickEditGuide(id){
             this.id = id;
             this.isEditing = true;
-            const res = await fetch("http://100.24.228.237:10021/api/guides/" + id);//////////////////////
+            const res = await fetch("http://100.24.228.237:10021/api/users/" + id);//////////////////////
             const data = await res.json();
             this.guide = new Guide(
                 data.name,
@@ -197,7 +202,7 @@ export default {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
             }
-            await fetch('http://100.24.228.237:10021/api/guides/' + this.id, requestOptions);
+            await fetch('http://100.24.228.237:10021/api/users/' + this.id, requestOptions);
             this.getGuides();
             this.guide = new Guide();
         },

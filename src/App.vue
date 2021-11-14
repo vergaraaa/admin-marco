@@ -12,7 +12,14 @@ export default {
     components:{
         Nav
     },
+    data() {
+        return {
+            usertype: ['empty'],
+            routes: []
+        }
+    },
     created(){
+        this.usertype = localStorage.getItem('usertype') || ['empty'];
         document.body.style.background = "#f4ede7";
     }
 }
