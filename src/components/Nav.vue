@@ -10,12 +10,12 @@
                 <template v-if="usertype.includes('admin') || usertype.includes('collaborator')">
                     <router-link :to="{ name: 'Home' }" class="nav-link px-4" :class="'Home' === $route.name ? 'active': ''">
                         <i class="fas fa-user-shield mr-1"></i> 
-                        Marco Admin
+                        Admin
                     </router-link>
                     <template v-if="usertype.includes('admin')">
                         <router-link :to="{ name: 'Collaborators' }" class="nav-link px-4" :class="'Collaborators' === $route.name ? 'active': ''">
                             <i class="fas fa-users mr-1"></i>
-                            Colaboradores
+                            Usuarios
                         </router-link>
                     </template>
                     <router-link :to="{ name: 'Guides' }" class="nav-link px-4" :class="'Guides' === $route.name ? 'active': ''">

@@ -13,10 +13,10 @@
                         <input v-else type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" :disabled="!isEditing">
                         <p class="form-text mb-5">Esta será la imagen que aparecerá como portada de la exposición.</p>
 
-                        <!-- CARROUSEL -->
+                        <!-- CARROUSEL IMAGES -->
                         <template v-if="images.length">
                             <div class="row mb-3">
-                                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                <div id="carouselImages" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
                                         <!-- IF IMAGES FROM NEW EXPO -->
                                         <template v-if="images.length">
@@ -25,20 +25,50 @@
                                             </div>
                                         </template>
                                     </div>
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselImages" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Previous</span>
                                     </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselImages" data-bs-slide="next">
                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Next</span>
                                     </button>
                                 </div>
                             </div>
                         </template>
+
+                        <!-- INPUT IMAGES -->
                         <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="files" id="files" @change="onFileChange" multiple required :disabled="!isEditing">
                         <input v-else type="file" accept="image/*" class="form-control mb-3" name="files" id="files" @change="onFileChange" multiple :disabled="!isEditing">
                         <p class="form-text mb-5">Otras imágenes de la exposición.</p>
+                        
+                        
+                        <!-- CARROUSEL SPONSORS -->
+                        <template v-if="sponsors.length">
+                            <div class="row mb-3">
+                                <div id="carouselSponsors" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <!-- IF IMAGES FROM NEW EXPO -->
+                                        <template v-if="sponsors.length">
+                                            <div v-for="(image, index) in sponsors" :key="index"  class="carousel-item" :class="index === 0 ? 'active': ''">
+                                                <img :src="image" class="d-block w-100" style="height:15rem;">
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselSponsors" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselSponsors" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                        <!-- INPUT SPONSORS -->
+                        <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="sponsors" id="sponsors" @change="onFileChange" multiple :disabled="!isEditing">
+
                     </div>
                     <div class="col-md-8">
                         <div class="row">
@@ -181,7 +211,7 @@
 <script>
 
 class Expo {
-        constructor(name, author, startDate, endDate, description, virtualTourURL, authorCapsuleURL, images, audio, curatorship, museography, location, technique, totalPieces) {
+        constructor(name, author, startDate, endDate, description, virtualTourURL, authorCapsuleURL, images, audio, curatorship, museography, location, technique, totalPieces, sponsors) {
             this.name = name;
             this.author = author;
             this.startDate = startDate;
@@ -196,6 +226,7 @@ class Expo {
             this.location = location;
             this.technique = technique;
             this.totalPieces = totalPieces;
+            this.sponsors = sponsors;
         }
     }
 
@@ -210,6 +241,7 @@ export default {
             isEditing: true,
             coverImage: "",
             images: [],
+            sponsors: [],
             audio: ''
         }
     },
@@ -238,13 +270,17 @@ export default {
                 data.museography,
                 data.location,
                 data.technique,
-                data.totalPieces
+                data.totalPieces,
+                data.sponsors
             );
             this.coverImage = this.expo.images[0];
             this.images = [];
             this.audio = this.expo.audio;
             for(let i = 1; i < this.expo.images.length; i++){
                 this.images.push(this.expo.images[i]);
+            }
+            for(let i = 1; i < this.expo.images.length; i++){
+                this.sponsors.push(this.expo.sponsors[i]);
             }
             console.log(this.expo)
         },
@@ -266,17 +302,16 @@ export default {
             document.getElementById("files").value = "";
             document.getElementById("file").value = "";
             document.getElementById("audio").value = "";
+            document.getElementById("sponsors").value = "";
         },
         async handleUpload() {
             const formData = new FormData();
 
             if(!this.isNewExpo){
                 if(this.audio === this.expo.audio){
-                    console.log("audio es el mismo")
                     formData.append("audio", this.audio);
                 }
                 else{
-                    console.log("audio cambió")
                     formData.append("files", document.getElementById("audio").files[0]);
                 }
 
@@ -301,10 +336,14 @@ export default {
                 }
             }
             else{
+                console.log(this.sponsors);
                 formData.append("files", document.getElementById("file").files[0]);
                 formData.append("files", document.getElementById("audio").files[0]);
                 for (const i of Object.keys(document.getElementById("files").files)) {
                     formData.append("files", document.getElementById("files").files[i]);
+                }
+                for (const i of Object.keys(document.getElementById("sponsors").files)) {
+                    formData.append("files", document.getElementById("sponsors").files[i], "sponsor:" + document.getElementById("sponsors").files[i].name);
                 }
             }
 
@@ -376,6 +415,17 @@ export default {
                 }
                 reader.readAsDataURL(input.files[index]);
                 index++;
+            }
+            else if(input.name === "sponsors"){
+                this.sponsors = [];
+                while(count--) {
+                    reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.sponsors.push(e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[index]);
+                    index++;
+                }
             }
         }
     }//,
