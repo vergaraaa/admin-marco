@@ -4,16 +4,19 @@
         <div class="row">
             <form @submit.prevent="handleUpload" enctype="multipart/form-data"> 
                 <div class="row">
-                    <div class="col-md-4">
-                        <!-- IMAGEN DE PORTADA FROM NEW EXPO -->
-                        <img v-if="coverImage || !isNewExpo" :src="coverImage" class="d-block w-100 mb-3" style="height: 15rem;">
+                    <!-- ROW FOR IMAGES -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- IMAGEN DE PORTADA FROM NEW EXPO -->
+                            <img v-if="coverImage || !isNewExpo" :src="coverImage" class="d-block w-100 mb-3" style="height: 15rem;">
 
-                        <!-- INPUT FROM EXPO -->
-                        <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" required :disabled="!isEditing">
-                        <input v-else type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" :disabled="!isEditing">
-                        <p class="form-text mb-5">Esta será la imagen que aparecerá como portada de la exposición.</p>
-
-                        <!-- CARROUSEL IMAGES -->
+                            <!-- INPUT FROM EXPO -->
+                            <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" required :disabled="!isEditing">
+                            <input v-else type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" :disabled="!isEditing">
+                            <p class="form-text mb-3">Esta será la imagen que aparecerá como portada de la exposición.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <!-- CARROUSEL IMAGES -->
                         <template v-if="images.length">
                             <div class="row mb-3">
                                 <div id="carouselImages" class="carousel slide" data-bs-ride="carousel">
@@ -40,109 +43,134 @@
                         <!-- INPUT IMAGES -->
                         <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="files" id="files" @change="onFileChange" multiple required :disabled="!isEditing">
                         <input v-else type="file" accept="image/*" class="form-control mb-3" name="files" id="files" @change="onFileChange" multiple :disabled="!isEditing">
-                        <p class="form-text mb-5">Otras imágenes de la exposición.</p>
-                        
-                        
-                        <!-- CARROUSEL SPONSORS -->
-                        <template v-if="sponsors.length">
-                            <div class="row mb-3">
-                                <div id="carouselSponsors" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner">
-                                        <!-- IF IMAGES FROM NEW EXPO -->
-                                        <template v-if="sponsors.length">
-                                            <div v-for="(image, index) in sponsors" :key="index"  class="carousel-item" :class="index === 0 ? 'active': ''">
-                                                <img :src="image" class="d-block w-100" style="height:15rem;">
-                                            </div>
-                                        </template>
+                        <p class="form-text mb-3">Otras imágenes de la exposición.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <!-- CARROUSEL SPONSORS -->
+                            <template v-if="sponsors.length">
+                                <div class="row mb-3">
+                                    <div id="carouselSponsors" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <!-- IF IMAGES FROM NEW EXPO -->
+                                            <template v-if="sponsors.length">
+                                                <div v-for="(image, index) in sponsors" :key="index"  class="carousel-item" :class="index === 0 ? 'active': ''">
+                                                    <img :src="image" class="d-block w-100" style="height:8rem;">
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselSponsors" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselSponsors" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
                                     </div>
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselSponsors" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselSponsors" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button>
                                 </div>
-                            </div>
-                        </template>
-                        <!-- INPUT SPONSORS -->
-                        <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="sponsors" id="sponsors" @change="onFileChange" multiple :disabled="!isEditing">
-
+                            </template>
+                            
+                            <!-- INPUT SPONSORS -->
+                            <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="sponsors" id="sponsors" @change="onFileChange" multiple :disabled="!isEditing">
+                            <p class="form-text mb-3">Imágenes de los patrocinadores si aplica.</p>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Nombre de la exposición:</label>
-                                    <input type="text" class="form-control" id="name" v-model="expo.name" :disabled="!isEditing" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="author" class="form-label">Autor:</label>
-                                    <input type="text" class="form-control" id="author" v-model="expo.author" :disabled="!isEditing" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="startDate" class="form-label">Fecha de inicio:</label>
-                                    <input type="text" class="form-control" id="startDate" v-model="expo.startDate" :disabled="!isEditing" required placeholder="Ex. 20 de Octubre de 2020">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="endDate" class="form-label">Fecha de conclusión:</label>
-                                    <input type="text" class="form-control" id="endDate" v-model="expo.endDate" :disabled="!isEditing" required placeholder="Ex. 20 de Octubre de 2020">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="virtualTourURL" class="form-label">URL del tour virtual:</label>
-                                    <input type="text" class="form-control" id="virtualTourURL" v-model="expo.virtualTourURL" :disabled="!isEditing" required>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label for="audio" class="form-label">Audio:</label>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <input v-if="isNewExpo" type="file" class="form-control" name="audio" id="audio" accept="audio/*" @change="onFileChange" :disabled="!isEditing" required>
-                                            <input v-else type="file" class="form-control" name="audio" id="audio" accept="audio/*" @change="onFileChange" :disabled="!isEditing">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <audio class="form-control" :src="audio" controls></audio>
-                                        </div>
+                    
+                    <!-- ROW FOR STATE -->
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="btn-group w-25 mb-3" role="group" aria-label="Basic radio toggle button group">
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
+                                <label class="btn btn-outline-secondary" for="btnradio1">Pasada</label>
+
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked>
+                                <label class="btn btn-outline-secondary" for="btnradio2">Actual</label>
+
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                                <label class="btn btn-outline-secondary" for="btnradio3">Próxima</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROW FOR DATA -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nombre de la exposición:</label>
+                                <input type="text" class="form-control" id="name" v-model="expo.name" :disabled="!isEditing" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="author" class="form-label">Autor:</label>
+                                <input type="text" class="form-control" id="author" v-model="expo.author" :disabled="!isEditing" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="startDate" class="form-label">Fecha de inicio:</label>
+                                <input type="text" class="form-control" id="startDate" v-model="expo.startDate" :disabled="!isEditing" required placeholder="Ex. 20 de Octubre de 2020">
+                            </div>
+                            <div class="mb-3">
+                                <label for="endDate" class="form-label">Fecha de conclusión:</label>
+                                <input type="text" class="form-control" id="endDate" v-model="expo.endDate" :disabled="!isEditing" required placeholder="Ex. 20 de Octubre de 2020">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="authorCapsuleURL" class="form-label">URL de la cápsula del autor:</label>
+                                <input type="text" class="form-control" id="authorCapsuleURL" v-model="expo.authorCapsuleURL" :disabled="!isEditing" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="virtualTourURL" class="form-label">URL del tour virtual:</label>
+                                <input type="text" class="form-control" id="virtualTourURL" v-model="expo.virtualTourURL" :disabled="!isEditing" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="curatorship" class="form-label">Curadores:</label>
+                                <input type="text" class="form-control" id="curatorship" v-model="expo.curatorship" :disabled="!isEditing" required>
+                            </div>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="audio" class="form-label">Audio:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <input v-if="isNewExpo" type="file" class="form-control" name="audio" id="audio" accept="audio/*" @change="onFileChange" :disabled="!isEditing" required>
+                                        <input v-else type="file" class="form-control" name="audio" id="audio" accept="audio/*" @change="onFileChange" :disabled="!isEditing">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <audio class="form-control" :src="audio" controls></audio>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="curatorship" class="form-label">Curadores:</label>
-                                    <input type="text" class="form-control" id="curatorship" v-model="expo.curatorship" :disabled="!isEditing" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="museography" class="form-label">Museografía:</label>
-                                    <input type="text" class="form-control" id="museography" v-model="expo.museography" :disabled="!isEditing" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="location" class="form-label">Ubicación:</label>
-                                    <input type="text" class="form-control" id="location" v-model="expo.location" :disabled="!isEditing" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="totalPieces" class="form-label">Total de piezas:</label>
-                                    <input type="text" class="form-control" id="totalPieces" v-model="expo.totalPieces" :disabled="!isEditing" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="authorCapsuleURL" class="form-label">URL de la cápsula del autor:</label>
-                                    <input type="text" class="form-control" id="authorCapsuleURL" v-model="expo.authorCapsuleURL" :disabled="!isEditing" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="technique" class="form-label">Técnica:</label>
-                                    <input type="text" class="form-control" id="technique" v-model="expo.technique" :disabled="!isEditing" required>
-                                </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="museography" class="form-label">Museografía:</label>
+                                <input type="text" class="form-control" id="museography" v-model="expo.museography" :disabled="!isEditing" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Ubicación:</label>
+                                <input type="text" class="form-control" id="location" v-model="expo.location" :disabled="!isEditing" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="totalPieces" class="form-label">Total de piezas:</label>
+                                <input type="text" class="form-control" id="totalPieces" v-model="expo.totalPieces" :disabled="!isEditing" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="technique" class="form-label">Técnica:</label>
+                                <input type="text" class="form-control" id="technique" v-model="expo.technique" :disabled="!isEditing" required>
                             </div>
                         </div>
-                        <div class="row mb-1">
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="description" class="form-label">Descripción:</label>
-                                    <textarea class="form-control" id="description" rows="5" v-model="expo.description" :disabled="!isEditing" required></textarea>
-                                </div>  
-                            </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Descripción:</label>
+                                <textarea class="form-control" id="description" rows="5" v-model="expo.description" :disabled="!isEditing" required></textarea>
+                            </div>  
                         </div>
+                    </div>
+
+                    <div class="row">
                         <div class="row mb-5">
                             <div class="col-md-12">
                                 <!-- BOTONES -->
