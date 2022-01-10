@@ -71,7 +71,7 @@
                             </template>
                             
                             <!-- INPUT SPONSORS -->
-                            <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="sponsors" id="sponsors" @change="onFileChange" multiple :disabled="!isEditing">
+                            <input type="file" accept="image/*" class="form-control mb-3" name="sponsors" id="sponsors" @change="onFileChange" multiple :disabled="!isEditing">
                             <p class="form-text mb-3">Imágenes de los patrocinadores si aplica.</p>
                         </div>
                     </div>
@@ -80,13 +80,16 @@
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="btn-group w-25 mb-3" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" 
+                                    v-model="expo.state" :checked="expo.state === 'past'" value="past" :disabled="!isEditing">
                                 <label class="btn btn-outline-secondary" for="btnradio1">Pasada</label>
 
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" 
+                                    v-model="expo.state" :checked="expo.state === 'current' || isNewExpo" value="current" :disabled="!isEditing">
                                 <label class="btn btn-outline-secondary" for="btnradio2">Actual</label>
 
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" 
+                                    v-model="expo.state" :checked="expo.state === 'upcoming'" value="upcoming" :disabled="!isEditing">
                                 <label class="btn btn-outline-secondary" for="btnradio3">Próxima</label>
                             </div>
                         </div>
@@ -239,13 +242,14 @@
 <script>
 
 class Expo {
-        constructor(name, author, startDate, endDate, description, virtualTourURL, authorCapsuleURL, images, audio, curatorship, museography, location, technique, totalPieces, sponsors) {
+        constructor(name, author, startDate, endDate, description, virtualTourURL, state, authorCapsuleURL, images, audio, curatorship, museography, location, technique, totalPieces, sponsors) {
             this.name = name;
             this.author = author;
             this.startDate = startDate;
             this.endDate = endDate;
             this.description = description;
             this.virtualTourURL = virtualTourURL;
+            this.state = state;
             this.authorCapsuleURL = authorCapsuleURL
             this.images = images;
             this.audio = audio;
@@ -291,6 +295,7 @@ export default {
                 data.endDate,
                 data.description,
                 data.virtualTourURL,
+                data.state,
                 data.authorCapsuleURL,
                 data.images,
                 data.audio,
@@ -381,6 +386,7 @@ export default {
             formData.append("endDate", this.expo.endDate);
             formData.append("description", this.expo.description);
             formData.append("virtualTourURL", this.expo.virtualTourURL);
+            formData.append("state", this.expo.state);
             formData.append("authorCapsuleURL", this.expo.authorCapsuleURL);
             formData.append("curatorship", this.expo.curatorship);
             formData.append("museography", this.expo.museography);
@@ -397,13 +403,15 @@ export default {
                 // await fetch("http://localhost:3000/api/expos/", requestOptions);
                 // await fetch("http://172.31.0.24:10021/api/expos/", requestOptions);
                 await fetch("http://100.24.228.237:10021/api/expos/", requestOptions);
+                this.$router.push({ name: "Expos" });
             }
             else{
                 // const response = await fetch("https://api-marco.herokuapp.com/api/expos/", requestOptions);
                 // await fetch("http://localhost:3000/api/expos/" + this.id, requestOptions);
                 await fetch("http://100.24.228.237:10021/api/expos/" + this.id, requestOptions);
+                this.$router.go();
             }
-            this.$router.push({ name: "Expos" });
+            
         },
         handleToggle(){
             this.isEditing = !this.isEditing;

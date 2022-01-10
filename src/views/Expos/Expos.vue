@@ -1,6 +1,18 @@
 <template>
     <div class="container mt-5">
         <template v-if="dataLoaded">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                        <div class="btn-group w-25 mb-5" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value="past" v-model="state" @change="getExpos()" >
+                            <label class="btn btn-outline-secondary" for="btnradio1">Pasada</label>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value="current" v-model="state" @change="getExpos()" checked>
+                            <label class="btn btn-outline-secondary" for="btnradio2">Actual</label>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="upcoming" v-model="state" @change="getExpos()">
+                            <label class="btn btn-outline-secondary" for="btnradio3">Próxima</label>
+                        </div>
+                </div>
+            </div>
             <template v-if="expos.length">
                 <div class="row">
                     <div class="col-md-6" v-for="expo in expos" :key="expo._id">
@@ -31,14 +43,11 @@
             <template v-else>
                 <div class="row">
                     <div class="col-md-12 mx-auto text-center">
-                        <p class="h3 mb-3">Parece que no hay ninguna expo...</p>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                            <router-link :to="{ name: 'ExpoCreate' }">
-                                <button type="btn" class="btn btn-primary px-5">
-                                    ¡Agregar expo!
-                                </button>
+                        <router-link :to="{ name: 'ExpoCreate' }">
+                            <router-link :to="{ name: 'ExpoCreate' }" class="text-decoration-none text-black">
+                                    <i class="fas fa-plus-circle fa-10x mb-3" style="color: lightgray"></i>
                             </router-link>
-                        </div>
+                        </router-link>
                     </div>
                 </div>
             </template>
@@ -60,7 +69,8 @@ export default {
     data() {
         return { 
             expos: [],
-            dataLoaded: false
+            dataLoaded: false,
+            state: "current"
         }
     },
     methods:{
@@ -68,7 +78,20 @@ export default {
             // const response = await fetch("https://api-marco.herokuapp.com/api/expos");
             // const response = await fetch("http://localhost:3000/api/expos");
             // const response = await fetch("http://172.31.0.24:10021/api/expos/");
-            const response = await fetch("http://100.24.228.237:10021/api/expos/");
+            var url = "";
+            if(this.state == "current"){
+                url = "http://100.24.228.237:10021/api/expos/current"
+            }
+            else if (this.state == "past"){
+                url = "http://100.24.228.237:10021/api/expos/past"
+            }
+            else if (this.state == "upcoming"){
+                url = "http://100.24.228.237:10021/api/expos/upcoming"
+            }
+            console.log(this.state);
+
+            // const response = await fetch("http://100.24.228.237:10021/api/expos/");
+            const response = await fetch(url);
             const data = await response.json();
             this.expos = data;
             this.dataLoaded = true;
