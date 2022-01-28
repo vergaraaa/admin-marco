@@ -177,13 +177,13 @@ export default {
     },
     methods:{
         async getGuides() {
-            const response = await fetch("http://100.24.228.237:10021/api/guides/");
+            const response = await fetch("https://admin.marco.org.mx/api/guides/");
             const data = await response.json();
             this.guides = data;
             this.guidesLoaded = true;
         },
         async getReservations() {
-            const response = await fetch("http://100.24.228.237:10021/api/reservations/");
+            const response = await fetch("https://admin.marco.org.mx/api/reservations/");
             const data = await response.json();
             this.reservations = data;
             this.reservationsLoaded = true;
@@ -195,7 +195,7 @@ export default {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.reservation)
                 }
-                await fetch("http://100.24.228.237:10021/api/reservations/" + this.id, requestOptions);
+                await fetch("https://admin.marco.org.mx/api/reservations/" + this.id, requestOptions);
             }
             else{
                 const requestOptions = {
@@ -203,7 +203,7 @@ export default {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.reservation)
                 }
-                const res = await fetch("http://100.24.228.237:10021/api/reservations/", requestOptions); 
+                const res = await fetch("https://admin.marco.org.mx/api/reservations/", requestOptions); 
                 const data = await res.json();
                 console.log(data);
             }
@@ -214,7 +214,7 @@ export default {
         async handleClickEditReservation(id){
             this.id = id;
             this.isEditing = true;
-            const res = await fetch("http://100.24.228.237:10021/api/reservations/" + id);
+            const res = await fetch("https://admin.marco.org.mx/api/reservations/" + id);
             const data = await res.json();
             this.reservation = new Reservation(
                 data.date,
@@ -236,7 +236,7 @@ export default {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
             }
-            await fetch('http://100.24.228.237:10021/api/reservations/' + this.id, requestOptions);
+            await fetch('https://admin.marco.org.mx/api/reservations/' + this.id, requestOptions);
             this.getReservations();
             this.reservation = new Reservation();
         },

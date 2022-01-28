@@ -81,9 +81,6 @@ export default {
     },
     methods:{
         async getActivities(){
-            // const response = await fetch("https://api-marco.herokuapp.com/api/expos");
-            // const response = await fetch("http://localhost:3000/api/expos");
-            // const response = await fetch("http://172.31.0.24:10021/api/expos/");
             const requestOptions = {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -92,7 +89,7 @@ export default {
                         year: moment(this.date).format('YYYY')
                         })
                 }
-            const response = await fetch("http://100.24.228.237:10021/api/activities/month/", requestOptions);
+            const response = await fetch("https://admin.marco.org.mx/api/activities/month/", requestOptions);
             const data = await response.json();
             this.activities = data;
             this.activitiesLoaded = true;

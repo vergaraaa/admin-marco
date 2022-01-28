@@ -10,79 +10,77 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Reservations from '../views/Reservations.vue'
 
-const routes = [
-    {
-        path: '/',
+const routes = [{
+        path: '/admin',
         name: 'Home',
         component: Home,
         meta: { requiresAuth: true, requiresAdminCollab: true },
     },
     {
-        path: '/collaborators',
+        path: '/admin/collaborators',
         name: 'Collaborators',
         component: Collaborators,
         meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
-        path: '/guides',
+        path: '/admin/guides',
         name: 'Guides',
         component: Guides,
         meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
-        path: '/reservations',
+        path: '/admin/reservations',
         name: 'Reservations',
         component: Reservations,
         meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
-        path: '/activities',
+        path: '/admin/activities',
         name: 'Activities',
         component: Activities,
         meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
-        path: '/activities/create',
+        path: '/admin/activities/create',
         name: 'ActivityCreate',
         component: ActivityDetail,
         meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
-        path: '/activities/:id',
+        path: '/admin/activities/:id',
         name: 'ActivityDetail',
         component: ActivityDetail,
         props: true,
         meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
-        path: '/expos',
+        path: '/admin/expos',
         name: 'Expos',
         component: Expos,
         meta: { requiresAuth: true, requiresAdminCollab: true },
     },
     {
-        path: '/expos/create',
+        path: '/admin/expos/create',
         name: 'ExpoCreate',
         component: ExpoDetail,
         props: true,
         meta: { requiresAuth: true, requiresAdminCollab: true },
     },
     {
-        path: '/expos/:id',
+        path: '/admin/expos/:id',
         name: 'ExpoDetail',
         component: ExpoDetail,
         props: true,
         meta: { requiresAuth: true, requiresAdminCollab: true }
     },
     {
-        path: '/login',
+        path: '/admin/login',
         name: 'Login',
         component: Login,
         meta: { requiresUnauth: true }
-    }
-    ,
+    },
     {
-        path: '/myreservations',
+        path: '/admin/myreservations',
         name: 'GuideReservations',
         component: Guide,
         meta: { requiresAuth: true }
@@ -94,8 +92,8 @@ const router = createRouter({
     routes
 });
 
-router.beforeEach(async function(to, _, next){
-    let response = await fetch('http://100.24.228.237:10021/api/users/admin/validateToken/', {
+router.beforeEach(async function(to, _, next) {
+    let response = await fetch('https://admin.marco.org.mx/api/users/admin/validateToken/', {
         method: "GET",
         headers: {
             auth_key: localStorage.getItem("token")
@@ -104,22 +102,20 @@ router.beforeEach(async function(to, _, next){
     let token = await response.json();
     let usertype = localStorage.getItem("usertype");
 
-    if(token.error){
+    if (token.error) {
+        console.log("no hay token");
         localStorage.clear();
         token = null;
         usertype = ["empty"];
     }
 
-    if (to.meta.requiresAuth && !token) { // Si no esta autenticado
+    if (to.meta.requiresAuth && token === null) { // Si no esta autenticado
         next({ name: 'Login' });
-    } 
-    else if (to.meta.requiresUnauth && token || to.meta.requiresAdmin && !usertype.includes("admin")) { // Si esta autenticado y quiere acceder al login
+    } else if (to.meta.requiresUnauth && token !== null || to.meta.requiresAdmin && !usertype.includes("admin")) { // Si esta autenticado y quiere acceder al login
         next({ name: 'Home' });
-    } 
-    else if (to.meta.requiresAdminCollab && usertype.includes('guide')) {
+    } else if (to.meta.requiresAdminCollab && usertype.includes('guide')) {
         next({ name: 'GuideReservations' });
-    } 
-    else {
+    } else {
         next();
     }
 })

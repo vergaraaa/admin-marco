@@ -155,7 +155,7 @@ export default {
     },
     methods:{
         async getGuides() {
-            const response = await fetch("http://100.24.228.237:10021/api/guides/");///////////////////////////////
+            const response = await fetch("https://admin.marco.org.mx/api/guides/");///////////////////////////////
             const data = await response.json();
             this.guides = data;
             this.guidesLoaded = true;
@@ -167,7 +167,7 @@ export default {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.guide)
                 }
-                await fetch("http://100.24.228.237:10021/api/users/" + this.id, requestOptions);/////////////////////////////////////////////
+                await fetch("https://admin.marco.org.mx/api/users/" + this.id, requestOptions);/////////////////////////////////////////////
             }
             else{
                 const requestOptions = {
@@ -175,7 +175,7 @@ export default {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.guide)
                 }
-                await fetch("http://100.24.228.237:10021/api/users/", requestOptions); ////////////////////////////
+                await fetch("https://admin.marco.org.mx/api/users/", requestOptions); ////////////////////////////
             }
             this.getGuides();
             this.isEditing = false;
@@ -184,7 +184,7 @@ export default {
         async handleClickEditGuide(id){
             this.id = id;
             this.isEditing = true;
-            const res = await fetch("http://100.24.228.237:10021/api/users/" + id);//////////////////////
+            const res = await fetch("https://admin.marco.org.mx/api/users/" + id);//////////////////////
             const data = await res.json();
             this.guide = new Guide(
                 data.name,
@@ -202,7 +202,7 @@ export default {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
             }
-            await fetch('http://100.24.228.237:10021/api/users/' + this.id, requestOptions);
+            await fetch('https://admin.marco.org.mx/api/users/' + this.id, requestOptions);
             this.getGuides();
             this.guide = new Guide();
         },

@@ -75,22 +75,19 @@ export default {
     },
     methods:{
         async getExpos(){
-            // const response = await fetch("https://api-marco.herokuapp.com/api/expos");
-            // const response = await fetch("http://localhost:3000/api/expos");
-            // const response = await fetch("http://172.31.0.24:10021/api/expos/");
             var url = "";
             if(this.state == "current"){
-                url = "http://100.24.228.237:10021/api/expos/current"
+                url = "https://admin.marco.org.mx/api/expos/current"
             }
             else if (this.state == "past"){
-                url = "http://100.24.228.237:10021/api/expos/past"
+                url = "https://admin.marco.org.mx/api/expos/past"
             }
             else if (this.state == "upcoming"){
-                url = "http://100.24.228.237:10021/api/expos/upcoming"
+                url = "https://admin.marco.org.mx/api/expos/upcoming"
             }
             console.log(this.state);
 
-            // const response = await fetch("http://100.24.228.237:10021/api/expos/");
+            // const response = await fetch("https://admin.marco.org.mx/api/expos/");
             const response = await fetch(url);
             const data = await response.json();
             this.expos = data;

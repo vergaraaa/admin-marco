@@ -89,7 +89,7 @@ export default {
     },
     methods: {
         async getGuide(){
-            const res = await fetch("http://100.24.228.237:10021/api/users/" + this.id); 
+            const res = await fetch("http://189.205.248.185/api/users/" + this.id); 
             const data = await res.json();
             this.name = data.name;
         },
@@ -102,7 +102,7 @@ export default {
                         to_date: this.to_date,
                     })
                 }
-            const response = await fetch("http://100.24.228.237:10021/api/reservations/user/" + this.id, requestOptions);
+            const response = await fetch("http://189.205.248.185/api/reservations/user/" + this.id, requestOptions);
             const data = await response.json();
             this.reservations = data;
             this.separateReservations();

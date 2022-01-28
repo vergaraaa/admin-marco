@@ -145,7 +145,7 @@ export default {
             // const response = await fetch("https://api-marco.herokuapp.com/api/expos");
             // const response = await fetch("http://localhost:3000/api/expos");
             // const response = await fetch("http://172.31.0.24:10021/api/expos/");
-            const response = await fetch("http://100.24.228.237:10021/api/collaborators/");
+            const response = await fetch("https://admin.marco.org.mx/api/collaborators/");
             const data = await response.json();
             this.collaborators = data;
             this.dataLoaded = true;
@@ -157,7 +157,7 @@ export default {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.collaborator)
                 }
-                await fetch("http://100.24.228.237:10021/api/users/" + this.id, requestOptions);
+                await fetch("https://admin.marco.org.mx/api/users/" + this.id, requestOptions);
             }
             else{
                 const requestOptions = {
@@ -165,7 +165,7 @@ export default {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.collaborator)
                 }
-                await fetch("http://100.24.228.237:10021/api/users/", requestOptions);
+                await fetch("https://admin.marco.org.mx/api/users/", requestOptions);
             }
             this.getCollaborators();
             this.isEditing = false;
@@ -174,7 +174,7 @@ export default {
         async handleClickEdit(id){
             this.id = id;
             this.isEditing = true;
-            const res = await fetch("http://100.24.228.237:10021/api/users/" + id);
+            const res = await fetch("https://admin.marco.org.mx/api/users/" + id);
             const data = await res.json();
             this.collaborator = new Collaborator(
                 data.name,
@@ -192,7 +192,7 @@ export default {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
             }
-            await fetch('http://100.24.228.237:10021/api/users/' + this.id, requestOptions);
+            await fetch('https://admin.marco.org.mx/api/users/' + this.id, requestOptions);
             this.getCollaborators();
             this.collaborator = new Collaborator();
         },

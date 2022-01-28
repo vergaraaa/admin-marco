@@ -27,7 +27,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="startDate" class="form-label">Fecha de inicio:</label>
-                                    <input type="date" class="form-control" id="startDate" v-model="acti.startDate" :disabled="!isEditing" required placeholder="Ex. 13 Ene 2021">
+                                    <input type="date" class="form-control" id="startDate" v-model="acti.startDate" :disabled="!isEditing" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="location" class="form-label">Ubicación:</label>
+                                    <input type="text" class="form-control" id="location" v-model="acti.location" :disabled="!isEditing" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -40,8 +44,24 @@
                                     <input type="text" class="form-control" id="hour" v-model="acti.hour" :disabled="!isEditing" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="location" class="form-label">Ubicación:</label>
-                                    <input type="text" class="form-control" id="location" v-model="acti.location" :disabled="!isEditing" required>
+                                    <label for="startDate" class="form-label">Fecha de fin:</label>
+                                    <input type="date" class="form-control" id="endDate" v-model="acti.endDate" :disabled="!isEditing" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="paidActivity" class="form-label">¿Actividad de pago?</label>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="paidActivity" 
+                                                v-model="acti.paidActivity" :disabled="!isEditing" @change="togglePaidActivity">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <template v-if="acti.paidActivity">
+                                                <input type="text" class="form-control" id="urlTickets" v-model="acti.urlTickets" :disabled="!isEditing" required placeholder="URL para comprar boletos">
+                                            </template>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -121,15 +141,18 @@
 <script>
 
 class Acti {
-        constructor(name, author, startDate, description, image, hour, location, organizer) {
+        constructor(name, author, startDate, endDate, description, image, hour, location, organizer, paidActivity, urlTickets) {
             this.name = name;
             this.author = author;
             this.startDate = startDate;
+            this.endDate = endDate;
             this.description = description;
             this.image = image;
             this.hour = hour;
             this.location = location;
             this.organizer = organizer;
+            this.paidActivity = paidActivity;
+            this.urlTickets = urlTickets;
         }
     }
 
@@ -141,7 +164,7 @@ export default {
             acti: new Acti(),
             isNewActivity: true,
             isEditing: true,
-            coverImage: "",
+            coverImage: ""
         }
     },
     created (){
@@ -153,27 +176,31 @@ export default {
     },
     methods: {
         async getActi(){
-            //Fetch de donde
-            const response = await fetch("http://100.24.228.237:10021/api/activities/" + this.id );
+            const response = await fetch("https://admin.marco.org.mx/api/activities/" + this.id );
             const data = await response.json();
+            console.log(data);
             this.acti = new Acti(
                 data.name,
                 data.author,
                 data.startDate,
+                data.endDate,
                 data.description,
                 data.image,
                 data.hour,
                 data.location,
                 data.organizer,
+                data.paidActivity,
+                data.urlTickets
             );
             this.coverImage = data.image;
             this.acti.startDate = new Date(this.acti.startDate).toISOString().substr(0, 10);            
+            this.acti.endDate = new Date(this.acti.endDate).toISOString().substr(0, 10);            
         },
         async deleteActi(){
             const requestOptions = {
                 method: "DELETE"
             }
-            await fetch("http://100.24.228.237:10021/api/activities/" + this.id, requestOptions);
+            await fetch("https://admin.marco.org.mx/api/activities/" + this.id, requestOptions);
             this.$router.push({ name: "Activities" });
         },
         handleClickToggle(){
@@ -201,10 +228,13 @@ export default {
             formData.append("name", this.acti.name);
             formData.append("author",this.acti.author);
             formData.append("startDate", this.acti.startDate);
+            formData.append("endDate", this.acti.endDate);
             formData.append("description", this.acti.description);
             formData.append("hour", this.acti.hour);
             formData.append("location", this.acti.location);
             formData.append("organizer", this.acti.organizer);
+            formData.append("paidActivity", this.acti.paidActivity || false);
+            formData.append("urlTickets", this.acti.urlTickets);
 
             const requestOptions = {
                 method: this.isNewActivity ? "POST" : "PUT",
@@ -214,10 +244,10 @@ export default {
                 }
             }
             if(this.isNewActivity){
-                await fetch("http://100.24.228.237:10021/api/activities/", requestOptions);
+                await fetch("https://admin.marco.org.mx/api/activities/", requestOptions);
             }
             else{
-                await fetch("http://100.24.228.237:10021/api/activities/" + this.id, requestOptions);
+                await fetch("https://admin.marco.org.mx/api/activities/" + this.id, requestOptions);
             }
             this.$router.push({ name: "Activities" });
         },
@@ -233,6 +263,15 @@ export default {
             }
             reader.readAsDataURL(input.files[index]);
             index++;
+        },
+        togglePaidActivity(){
+            if(this.acti.paidActivity){
+                this.acti.urlTickets = "";
+                console.log(this.acti.urlTickets);
+            }
+            else{
+                this.acti.urlTickets = "empty";
+            }
         }
     }
 }

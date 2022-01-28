@@ -8,7 +8,7 @@
                 <div class="col-md-5">
                     <img src="fondo_marco.jpg" class="img-fluid p-3">
                     <div class="d-grid gap-4">
-                        <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'ActivityCreate' }" role="button" >Crear nueva actividad</router-link>
+                        <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'ActivityCreate' }" role="button">Crear nueva actividad</router-link>
                         <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'ExpoCreate' }" role="button">Crear nueva exposición</router-link>
                     </div>
                 </div>
@@ -63,13 +63,13 @@ export default {
     methods: {
         async getUserName(){
             this.id = localStorage.getItem("id");
-            const res = await fetch("http://100.24.228.237:10021/api/users/name/" + this.id);
+            const res = await fetch("https://admin.marco.org.mx/api/users/name/" + this.id);
             const data = await res.json();
             this.name = data.name;
             this.nameLoaded = true;
         },
         async getActivities() {
-            const res = await fetch("http://100.24.228.237:10021/api/activities/month");
+            const res = await fetch("https://admin.marco.org.mx/api/activities/month");
             const data = await res.json();
             this.activities = data;
             this.activitiesLoaded = true;
