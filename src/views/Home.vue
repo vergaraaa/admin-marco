@@ -1,7 +1,7 @@
 
 <template>
     <div class="container mt-5">
-        <template v-if="nameLoaded && activitiesLoaded">
+        <template v-if="nameLoaded && activitiesLoaded && urlMenuLoaded &&  ticketPriceGeneralLoaded &&  ticketPriceSpecialLoaded">
             <h1>Hola {{name}}, ¿qué hacemos hoy?</h1>
             <h5 class="font-weight-bold">#MuseoDeTodos</h5>
             <div class="row">
@@ -25,6 +25,27 @@
                                 </table>
                             </div>
                     </div>
+                        <form @submit.prevent="handleUploadMenu">
+                            <label for="urlMenu" class="form-label h4">Menú actual del restaurante: {{urlMenu}}</label>
+                            <input type="text" class="form-control" id="urlMenu" v-model="urlMenuNew">
+                            <button type="submit" class="btn btn-success mx-2 mt-1">
+                                Guardar 
+                            </button>
+                        </form>
+                        <form @submit.prevent="handleUploadTicket">
+                            <label for="ticketPriceGeneral" class="form-label h4">Precio actual por boleto normal: {{ticketPriceGeneral}}</label>
+                            <input type="number" class="form-control" id="ticketPriceGeneral" v-model="ticketPriceGeneralNew">
+                            <button type="submit" class="btn btn-success mx-2 mt-1">
+                                Guardar 
+                            </button>
+                        </form>
+                        <form @submit.prevent="handleUploadTicketSpecial">
+                            <label for="ticketPriceSpecial" class="form-label h4">Precio actual por boleto con descuento: {{ticketPriceSpecial}}</label>
+                            <input type="number" class="form-control" id="ticketPriceSpecial" v-model="ticketPriceSpecialNew">
+                            <button type="submit" class="btn btn-success mx-2 mt-1">
+                                Guardar 
+                            </button>
+                        </form>
                 </div>
             </div>
         </template>   
@@ -50,29 +71,110 @@ export default {
             name: '',
             activities: [],
             month: '',
+            urlMenu: '',
+            urlMenuNew: '',
+            ticketPriceGeneral: 0,
+            ticketPriceGeneralNew: 0,
+            ticketPriceSpecial: '',
+            ticketPriceSpecialNew: 0,
             nameLoaded: false,
-            activitiesLoaded: false
+            activitiesLoaded: false,
+            urlMenuLoaded: false,
+            ticketPriceGeneralLoaded: false,
+            ticketPriceSpecialLoaded: false
         }
     },
     created() {
         this.getUserName();
         this.getActivities();
+        this.getMenu();
+        this.getPrice();
+        this.getPriceSpecial();
         this.month = new Date().toLocaleDateString('es-ES', {month: "long"}).toUpperCase();
-
     },
     methods: {
         async getUserName(){
             this.id = localStorage.getItem("id");
-            const res = await fetch("https://admin.marco.org.mx/api/users/name/" + this.id);
+            const res = await fetch("https://admin.marco.org.mx/api/users/name/" + this.id, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+            });
             const data = await res.json();
             this.name = data.name;
             this.nameLoaded = true;
         },
         async getActivities() {
-            const res = await fetch("https://admin.marco.org.mx/api/activities/month");
+            const res = await fetch("https://admin.marco.org.mx/api/activities/month", {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+            });
             const data = await res.json();
             this.activities = data;
             this.activitiesLoaded = true;
+        },
+        async getMenu() {
+            console.log('getting menu')
+            const res = await fetch("https://admin.marco.org.mx/api/priceandmenu/urlMenu", {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                cache: 'no-cache'
+            });
+            const data = await res.json();
+            this.urlMenu = data.urlMenu;
+            this.urlMenuLoaded = true;
+            this.urlMenuNew = "";
+        },
+        async getPrice() {
+            console.log('getting price general')
+            const res = await fetch("https://admin.marco.org.mx/api/priceandmenu/ticketPriceGeneral");
+            const data = await res.json();
+            this.ticketPriceGeneral = data.ticketPriceGeneral;
+            this.ticketPriceGeneralLoaded = true;
+            this.ticketPriceGeneralNew = 0;
+        },
+        async getPriceSpecial() {
+            console.log('getting price special')
+            const res = await fetch("https://admin.marco.org.mx/api/priceandmenu/ticketPriceDiscount", {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+            });
+            const data = await res.json();
+            this.ticketPriceSpecial = data.ticketPriceDiscount;
+            this.ticketPriceSpecialLoaded = true;
+            this.ticketPriceSpecialNew = 0;
+        },
+        async handleUploadMenu(){
+            await fetch('https://admin.marco.org.mx/api/priceandmenu/urlMenu', {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    urlMenu: this.urlMenu,
+                    newUrlMenu: this.urlMenuNew
+                })
+            });
+            this.getMenu();
+        },
+        async handleUploadTicket(){
+            await fetch('https://admin.marco.org.mx/api/priceandmenu/ticketPriceGeneral', {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    ticketPriceGeneral: this.ticketPriceGeneral,
+                    newPrice: this.ticketPriceGeneralNew
+                })
+            });
+            this.getPrice();
+        },
+        async handleUploadTicketSpecial(){
+            await fetch('https://admin.marco.org.mx/api/priceandmenu/ticketPriceDiscount', {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    ticketPriceDiscount: this.ticketPriceSpecial,
+                    newPrice: this.ticketPriceSpecialNew
+                })
+            });
+            this.getPriceSpecial();
         }
     }
 }

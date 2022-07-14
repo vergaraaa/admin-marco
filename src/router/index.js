@@ -88,6 +88,7 @@ const routes = [{
 ];
 
 const router = createRouter({
+    // createWebHistory(process.env.BASE_URL)
     history: createWebHistory(process.env.BASE_URL),
     routes
 });
