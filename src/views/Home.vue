@@ -8,41 +8,48 @@
                 <div class="col-md-5">
                     <img src="fondo_marco.jpg" class="img-fluid p-3">
                     <div class="d-grid gap-4">
-                        <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'ActivityCreate' }" role="button">Crear nueva actividad</router-link>
-                        <router-link class="btn btn-dark p-3 m-1 bg-marco" :to="{ name: 'ExpoCreate' }" role="button">Crear nueva exposición</router-link>
+                        <router-link class="btn p-3 m-1 btn-marco" :to="{ name: 'ActivityCreate' }" role="button">Crear nueva actividad</router-link>
+                        <router-link class="btn p-3 m-1 btn-marco" :to="{ name: 'ExpoCreate' }" role="button">Crear nueva exposición</router-link>
                     </div>
                 </div>
                 <div class="col-md-7">
                     <h2 class="text-center">Actividades del Mes</h2>
-                    <div class="row px-4 pb-4 bg-marco">
-                            <h3 class="text-center" style="color: white;"> {{month}} </h3>
+                    <div class="row px-4 pb-4 bg-marco  mb-3">
+                            <h3 class="text-center mt-2" style="color: white;"> {{month}} </h3>
                             <div class="col align-self-center" style="background: white;">
                                 <table class="table table-bordered">
-                                    <tr v-for="activity in activities" :key="activity._id">
-                                        <td class="p-2" style="width: 75%">{{ activity.name }}</td>
-                                        <td class="p-2" style="width: 25%">{{ new Date(activity.startDate).toLocaleDateString('es-ES', { month: 'long', day: 'numeric'}) }}</td>
-                                    </tr>
+                                    <template v-if="activities.length">
+                                        <tr v-for="activity in activities" :key="activity._id">
+                                            <td class="p-2" style="width: 75%">{{ activity.name }}</td>
+                                            <td class="p-2" style="width: 25%">{{ new Date(activity.startDate).toLocaleDateString('es-ES', { month: 'long', day: 'numeric'}) }}</td>
+                                        </tr>
+                                    </template>
+                                    <template v-else>
+                                        <tr class="text-center">
+                                            <p class="h5">Parece que no hay ninguna actividad...</p>
+                                        </tr>
+                                    </template>
                                 </table>
                             </div>
                     </div>
-                        <form @submit.prevent="handleUploadMenu">
-                            <label for="urlMenu" class="form-label h4">Menú actual del restaurante: {{urlMenu}}</label>
+                        <form @submit.prevent="handleUploadMenu" class="mb-3">
+                            <label for="urlMenu" class="form-label h6">Menú actual del restaurante: <a v-bind:href="urlMenu" target="_blank" class="link-dark">{{urlMenu}}</a></label>
                             <input type="text" class="form-control" id="urlMenu" v-model="urlMenuNew">
-                            <button type="submit" class="btn btn-success mx-2 mt-1">
+                            <button type="submit" class="btn btn-success mt-1">
                                 Guardar 
                             </button>
                         </form>
-                        <form @submit.prevent="handleUploadTicket">
-                            <label for="ticketPriceGeneral" class="form-label h4">Precio actual por boleto normal: {{ticketPriceGeneral}}</label>
+                        <form @submit.prevent="handleUploadTicket" class="mb-3">
+                            <label for="ticketPriceGeneral" class="form-label h6">Precio actual por boleto normal: {{ticketPriceGeneral}}</label>
                             <input type="number" class="form-control" id="ticketPriceGeneral" v-model="ticketPriceGeneralNew">
-                            <button type="submit" class="btn btn-success mx-2 mt-1">
+                            <button type="submit" class="btn btn-success mt-1">
                                 Guardar 
                             </button>
                         </form>
                         <form @submit.prevent="handleUploadTicketSpecial">
-                            <label for="ticketPriceSpecial" class="form-label h4">Precio actual por boleto con descuento: {{ticketPriceSpecial}}</label>
+                            <label for="ticketPriceSpecial" class="form-label h6">Precio actual por boleto con descuento: {{ticketPriceSpecial}}</label>
                             <input type="number" class="form-control" id="ticketPriceSpecial" v-model="ticketPriceSpecialNew">
-                            <button type="submit" class="btn btn-success mx-2 mt-1">
+                            <button type="submit" class="btn btn-success mt-1">
                                 Guardar 
                             </button>
                         </form>
@@ -183,6 +190,17 @@ export default {
 <style>
 .bg-marco{
     background-color: #ec179b;
+    color: white;
+}
+
+.btn-marco{
+    background-color: #ec179b;
+    color: white;
+}
+
+.btn-marco:hover {
+    background-color: #c51281; /* Marco oscuro */
+    color: white;
 }
 
 .spinner-border {
