@@ -11,7 +11,7 @@ import Login from '../views/Login.vue'
 import Reservations from '../views/Reservations.vue'
 
 const routes = [{
-        path: '/admin',
+        path: '/admin/',
         name: 'Home',
         component: Home,
         meta: { requiresAuth: true, requiresAdminCollab: true },

@@ -123,7 +123,7 @@ export default {
             console.log('getting menu')
             const res = await fetch("https://admin.marco.org.mx/api/priceandmenu/urlMenu", {
                 method: 'GET',
-                headers: {'Content-Type': 'application/json'},
+                headers: {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'},
                 cache: 'no-cache'
             });
             const data = await res.json();
@@ -133,7 +133,10 @@ export default {
         },
         async getPrice() {
             console.log('getting price general')
-            const res = await fetch("https://admin.marco.org.mx/api/priceandmenu/ticketPriceGeneral");
+            const res = await fetch("https://admin.marco.org.mx/api/priceandmenu/ticketPriceGeneral", {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'},
+            });
             const data = await res.json();
             this.ticketPriceGeneral = data.ticketPriceGeneral;
             this.ticketPriceGeneralLoaded = true;
@@ -143,7 +146,7 @@ export default {
             console.log('getting price special')
             const res = await fetch("https://admin.marco.org.mx/api/priceandmenu/ticketPriceDiscount", {
                 method: 'GET',
-                headers: {'Content-Type': 'application/json'},
+                headers: {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'},
             });
             const data = await res.json();
             this.ticketPriceSpecial = data.ticketPriceDiscount;

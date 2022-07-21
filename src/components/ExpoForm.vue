@@ -318,7 +318,10 @@ export default {
         },
         async deleteExpo(){
             const requestOptions = {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    auth_key: localStorage.getItem("token")
+                }
             }
             await fetch("https://admin.marco.org.mx/api/expos/" + this.id, requestOptions);
             this.$router.push({ name: "Expos" });
@@ -394,7 +397,10 @@ export default {
 
             const requestOptions = {
                 method: this.isNewExpo ? "POST" : "PUT",
-                body: formData
+                body: formData,
+                headers: {
+                    auth_key: localStorage.getItem("token")
+                }
             }
             if(this.isNewExpo){
                 await fetch("https://admin.marco.org.mx/api/expos/", requestOptions);
@@ -402,7 +408,7 @@ export default {
             }
             else{
                 await fetch("https://admin.marco.org.mx/api/expos/" + this.id, requestOptions);
-                this.$router.go();
+                this.$router.push({ name: "Expos" });
             }
             
         },
