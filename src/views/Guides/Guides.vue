@@ -23,7 +23,7 @@
                             <template v-else>
                                 <div class="row p-3">
                                     <div class="col-md-12">
-                                        <p class="h5 text-center">Parece que no hay ningún guia...</p>
+                                        <p class="h5 text-center text-black">Parece que no hay ningún guia...</p>
                                     </div>
                                 </div>
                             </template>
@@ -48,19 +48,19 @@
                             <div class="col-md-11 mx-auto">
                                 <form @submit.prevent="handleUploadGuide">
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Nombre:</label>
+                                        <label for="name" class="form-label text-black">Nombre:</label>
                                         <input type="text" class="form-control" id="name" v-model="guide.name" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="lastname" class="form-label">Apellido:</label>
+                                        <label for="lastname" class="form-label text-black">Apellido:</label>
                                         <input type="text" class="form-control" id="lastname" v-model="guide.lastname" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">Correo:</label>
+                                        <label for="email" class="form-label text-black">Correo:</label>
                                         <input type="email" class="form-control" id="email" v-model="guide.email" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="password" class="form-label">Password:</label>
+                                        <label for="password" class="form-label text-black">Password:</label>
                                         <input type="password" class="form-control" id="password" v-model="guide.password" required>
                                     </div>
                                     <div class="mb-3">

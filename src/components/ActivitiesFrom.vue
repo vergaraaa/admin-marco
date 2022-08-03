@@ -198,7 +198,10 @@ export default {
         },
         async deleteActi(){
             const requestOptions = {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    auth_key: localStorage.getItem("token")
+                }
             }
             await fetch("https://admin.marco.org.mx/api/activities/" + this.id, requestOptions);
             this.$router.push({ name: "Activities" });
