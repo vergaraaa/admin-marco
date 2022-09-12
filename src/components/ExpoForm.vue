@@ -9,7 +9,6 @@
                         <div class="col-md-4">
                             <!-- IMAGEN DE PORTADA FROM NEW EXPO -->
                             <img v-if="coverImage || !isNewExpo" :src="coverImage" class="d-block w-100 mb-3" style="height: 15rem;">
-
                             <!-- INPUT FROM EXPO -->
                             <input v-if="isNewExpo" type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" required :disabled="!isEditing">
                             <input v-else type="file" accept="image/*" class="form-control mb-3" name="file" id="file" @change="onFileChange" :disabled="!isEditing">
@@ -74,6 +73,7 @@
                             <input type="file" accept="image/*" class="form-control mb-3" name="sponsors" id="sponsors" @change="onFileChange" multiple :disabled="!isEditing">
                             <p class="form-text mb-3">Imágenes de los patrocinadores si aplica.</p>
                         </div>
+                        <p class="form-text mb-3">Para las fotos se recomiendan las siguientes medidas: 1080 pixeles de ancho x 990 de largo con 72 dpis y un ratio de 1.09.</p>
                     </div>
                     
                     <!-- ROW FOR STATE -->

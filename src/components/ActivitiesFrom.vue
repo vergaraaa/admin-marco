@@ -12,6 +12,7 @@
                         <input v-if="isNewActivity" type="file" accept="image/*" class="form-control mb-3" name="files" id="files" @change="onFileChange" required :disabled="!isEditing">
                         <input v-else type="file" accept="image/*" class="form-control mb-3" name="files" id="files" @change="onFileChange" :disabled="!isEditing">
                         <p class="form-text mb-5">Esta será la imagen que aparecerá como portada de la actividad.</p>
+                        <p class="form-text mb-3">Para las fotos se recomiendan las siguientes medidas: 1080 pixeles de ancho x 990 de largo con 72 dpis y un ratio de 1.09.</p>
                     </div>
 
                     <div class="col-md-8">
